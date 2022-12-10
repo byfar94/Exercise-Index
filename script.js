@@ -1,53 +1,70 @@
+//main array that holds object (exercise cards)
 let exArray = [];
 
 //exercise card factory function
-function createExCard(img, exercise, category, summary, card){
+function createExCard(img, exercise, category, summary){
     return{
-        img, exercise, category, summary, card
+        img, 
+        exercise, 
+        category, 
+        summary, 
+        card: createElement("div", "card"),
     }
 };
 
-function createElement(el, cls){
+
+//function to create elements 
+function createElement(el, cls, inText){
     let element = document.createElement(el);
-    element.classList.add(cls)
+    if (cls != undefined){
+        element.classList.add(cls);
+    }
+    if (inText != undefined){
+        element.innerText = inText;
+    }
     return element;
 }
-
-//library of exercise cards
-let digiFlex = createExCard("Images/digiflex.jpg", "DigiFlex", "hand", "Hold arm by side with elbow @ 90 degree angle", createElement("div", "card"));
-add(digiFlex);
-let theraPutty = createExCard("Images/putty.jpg", "TheraPutty", "hand", "", createElement("div", "card"));
-add(theraPutty);
-let xTrainer = createExCard("Images/xtrainer.jpg", "X-Trainer", "hand", "", createElement("div", "card"))
-add(xTrainer);
-let xtwist = createExCard("Images/xtwist.jpg", "X-Twist", "hand", "", createElement("div", "card"));
-add(xtwist);
 
 //push to array function
 function add(name){
     exArray.push(name);
 }
 
+
+// <---------------library of exercise cards------------------->
+
+let digiFlex = createExCard("Images/digiflex.jpg", "DigiFlex", "hand", "Hold arm by side with elbow @ 90 degree angle");
+add(digiFlex);
+
+let theraPutty = createExCard("Images/putty.jpg", "TheraPutty", "hand", "");
+add(theraPutty);
+
+let xTrainer = createExCard("Images/xtrainer.jpg", "X-Trainer", "hand", "")
+add(xTrainer);
+
+let xtwist = createExCard("Images/xtwist.jpg", "X-Twist", "hand", "");
+add(xtwist);
+
+//console log array
 console.log(exArray);
 
 //function to create and render exercise cards
 function displayExerciseCards(array){
     const container = document.querySelector(".exercises");
         array.forEach(function(item){
-            let title = document.createElement("h2");
-            title.innerText = item.exercise;
-            let image = document.createElement("img");
+            //card item creation
+            let title = createElement("h2","card-header", item.exercise);
+            let image = createElement("img", "card-img");
             image.src = item.img;
-            let summary = document.createElement("p");
-            summary.innerText = item.summary;
-            summary.classList.add("summary");
-            let sumTab = document.createElement("a");
-            sumTab.innerText = "Summary..."
-            sumTab.classList.add("sum-tab");
+            let summary = createElement("p", "summary", item.summary);
+            let sumTab = createElement("a", "sum-tab", "Summary...");
+
+            //event listener to display summary
             sumTab.addEventListener("click", function(){
                 summary.classList.toggle("on");
             });
 
+            //appending items to card
             item.card.appendChild(title);
             item.card.appendChild(image);
             item.card.appendChild(sumTab);
