@@ -1,97 +1,89 @@
-//main array that holds object (exercise cards)
-let exArray = [];
+let videoSection = document.querySelector(".exercise-container");
 
-//exercise card factory function
-function createExCard(img, exercise, category, summary){
-    return{
-        img, 
-        exercise, 
-        category, 
-        summary, 
-        card: createElement("div", "card"),
-    }
-};
+console.log(videoSection);
 
+async function getData() {
+  try {
+    let response = await fetch(
+      "https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=PLqhofO-4kYdstIouG7AtMPWUXL1ZwvGSG&key=AIzaSyDB8GhNoc3I3u8kspR7sozXGHlaZKlNRSc"
+    );
 
-//function to create elements 
-function createElement(el, cls, inText){
-    let element = document.createElement(el);
-    if (cls != undefined){
-        element.classList.add(cls);
-    }
-    if (inText != undefined){
-        element.innerText = inText;
-    }
-    return element;
+    let playlistData = await response.json();
+    console.log(playlistData);
+    createCard(playlistData);
+    return playlistData;
+  } catch (err) {
+    console.error(err);
+  }
 }
 
-//push to array function
-function add(name){
-    exArray.push(name);
+function createCard(datas) {
+  datas.items.forEach((data) => {
+    let cardTitle = createElement("h2", "card-title", data.snippet.title);
+    console.log(cardTitle);
+    videoSection.appendChild(cardTitle);
+    let cardPic = createElement(
+      "img",
+      "card-pic",
+      undefined,
+      data.snippet.thumbnails.high.url
+    );
+    console.log(cardPic);
+    videoSection.appendChild(cardPic);
+    let cardDescription = createElement(
+      "p",
+      "card-description",
+      data.snippet.description
+    );
+    console.log(cardDescription.innerText);
+    videoSection.appendChild(cardDescription);
+    let cardVideo = createElement(
+      "div",
+      "card-video",
+      undefined,
+      undefined,
+      data.snippet.resourceId.videoId
+    );
+    console.log(cardVideo);
+    videoSection.appendChild(cardVideo);
+  });
 }
 
+function displayCards() {}
 
-// <---------------library of exercise cards------------------->
+getData();
 
-let digiFlex = createExCard("Images/digiflex.jpg", "DigiFlex", "hand", "Hold arm by side with elbow @ 90 degree angle");
-add(digiFlex);
-
-let theraPutty = createExCard("Images/putty.jpg", "TheraPutty", "hand", "");
-add(theraPutty);
-
-let xTrainer = createExCard("Images/xtrainer.jpg", "X-Trainer", "hand", "")
-add(xTrainer);
-
-let xtwist = createExCard("Images/xtwist.jpg", "X-Twist", "hand", "");
-add(xtwist);
-
-//console log array
-console.log(exArray);
-
-//function to create and render exercise cards
-function displayExerciseCards(array){
-    const container = document.querySelector(".exercises");
-        array.forEach(function(item){
-            //card item creation
-            let title = createElement("h2","card-header", item.exercise);
-            let image = createElement("img", "card-img");
-            image.src = item.img;
-            let summary = createElement("p", "summary", item.summary);
-            let sumTab = createElement("a", "sum-tab", "Summary...");
-
-            //event listener to display summary
-            sumTab.addEventListener("click", function(){
-                summary.classList.toggle("on");
-            });
-
-            //appending items to card
-            item.card.appendChild(title);
-            item.card.appendChild(image);
-            item.card.appendChild(sumTab);
-            item.card.appendChild(summary);
-            container.appendChild(item.card);
-            
-            
-        })
-
+function createElement(el, cls, inText, image, vid) {
+  let element = document.createElement(el);
+  if (cls != undefined) {
+    element.classList.add(cls);
+  }
+  if (inText != undefined) {
+    element.innerHTML = inText;
+  }
+  if (image != undefined) {
+    element.src = image;
+  }
+  if (vid != undefined) {
+    element.innerHTML = `<iframe id=player type=text/html width=300 height=200 src= https://www.youtube.com/embed/${vid} frameborder=0 ></iframe>`;
+  }
+  return element;
 }
-displayExerciseCards(exArray);
+
+function createExerciseCard(cardTitle, cardImg, cardVideo, cardSummary) {}
 
 //search functionality
-const searchInput = document.querySelector("#search");
-searchInput.addEventListener("input", () => {
-        let value = searchInput.value.toLowerCase();
-        exArray.forEach(function(item){
-        const visable = item.exercise.toLowerCase().includes(value);
-        if (value == "" || value == " "){
-            item.card.classList.remove("hide");
-        }
-        else if(!visable && value !=""){
-            item.card.classList.add("hide");
-        }
-        else if(visable && value !="")
-            item.card.classList.remove("hide");
-        })
-    }   
-
-        )
+function search() {
+  const searchInput = document.querySelector("#search");
+  searchInput.addEventListener("input", () => {
+    let value = searchInput.value.toLowerCase();
+    exArray.forEach(function (item) {
+      const visable = item.exercise.toLowerCase().includes(value);
+      if (value == "" || value == " ") {
+        item.card.classList.remove("hide");
+      } else if (!visable && value != "") {
+        item.card.classList.add("hide");
+      } else if (visable && value != "") item.card.classList.remove("hide");
+    });
+  });
+}
