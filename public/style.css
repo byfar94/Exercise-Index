@@ -35,16 +35,16 @@ header input {
 
 /* <------------------------- Exercise Cards ----------------------> */
 
-.exercises {
+.exercise-container {
   display: grid;
-  grid-template-columns: repeat(auto-fit, 23rem);
+  grid-template-columns: repeat(auto-fit, 25rem);
   justify-content: space-evenly;
   align-items: center;
   gap: 1rem;
   padding: 0 1rem 1rem;
 }
 
-.exercises div {
+.card-contain {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -54,12 +54,34 @@ header input {
   background-color: white;
   box-shadow: 2px 2px 10px darkgray;
   gap: 1rem;
+  position: relative;
 }
 
-.exercises img {
-  width: 60%;
+.card-pic {
+  width: 20rem;
   height: auto;
   border-radius: 1rem;
+}
+
+.card-title {
+  font-size: 1.5rem;
+}
+
+.card-description {
+  font-size: 1rem;
+}
+
+.card-video {
+  position: absolute;
+  top: 50px;
+}
+
+.show {
+  z-index: 5;
+}
+
+.hide {
+  z-index: -5;
 }
 
 .sum-tab {
