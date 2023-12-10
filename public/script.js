@@ -93,16 +93,18 @@ async function appendCards(array) {
 }
 
 // using youtube API data to create a card for each video in a youtube setlist
-(async () => {
+
+async function loadPage() {
   try {
     let vidData = await getData();
     let newArray = createCards(vidData);
     appendCards(newArray);
+    return newArray;
   } catch (err) {
     console.log(err);
   }
-})();
-
+}
+let pageData = loadPage();
 //event listeners
 
 async function showVid() {
@@ -123,17 +125,21 @@ async function showVid() {
 setTimeout(showVid, 1000);
 
 //search functionality
-function search() {
+async function search() {
+  let exArray = await pageData;
   const searchInput = document.querySelector("#search");
   searchInput.addEventListener("input", () => {
     let value = searchInput.value.toLowerCase();
     exArray.forEach(function (item) {
-      const visable = item.exercise.toLowerCase().includes(value);
+      console.log(item.titleEl.innerText);
+      const visable = item.titleEl.innerText.toLowerCase().includes(value);
       if (value == "" || value == " ") {
-        item.card.classList.remove("hide");
+        item.cardEl.classList.remove("invis");
       } else if (!visable && value != "") {
-        item.card.classList.add("hide");
-      } else if (visable && value != "") item.card.classList.remove("hide");
+        item.cardEl.classList.add("invis");
+      } else if (visable && value != "") item.cardEl.classList.remove("invis");
     });
   });
 }
+
+search();

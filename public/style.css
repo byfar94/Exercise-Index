@@ -101,7 +101,7 @@ header input {
   display: block;
 }
 
-.card.hide {
+.invis {
   display: none;
 }
 
