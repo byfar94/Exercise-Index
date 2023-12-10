@@ -35,7 +35,7 @@ function createVideoElement(el, cls, vid) {
   let element = document.createElement(el);
   element.classList.add(cls);
   element.classList.add("hide");
-  element.innerHTML = `<iframe id=player type=text/html width=300 height=200 src= https://www.youtube.com/embed/${vid} frameborder=0 ></iframe>`;
+  element.setAttribute("videoId", `${vid}`);
   return element;
 }
 
@@ -97,7 +97,7 @@ async function appendCards(array) {
 async function loadPage() {
   try {
     let vidData = await getData();
-    let newArray = createCards(vidData);
+    let newArray = await createCards(vidData);
     appendCards(newArray);
     return newArray;
   } catch (err) {
@@ -105,6 +105,7 @@ async function loadPage() {
   }
 }
 let pageData = loadPage();
+
 //event listeners
 
 async function showVid() {
@@ -118,8 +119,21 @@ async function showVid() {
     pictures[i].addEventListener("click", function () {
       videos[i].classList.remove("hide");
       videos[i].classList.add("show");
+      vidContain = videos[i];
+      vidID = vidContain.getAttribute("videoId");
+      videos[
+        i
+      ].innerHTML = `<iframe id=player type=text/html src= https://www.youtube.com/embed/${vidID}?autoplay=1 frameborder=0 ></iframe>`;
+      setTimeout(hideVideo, 15000, videos[i]);
     });
   }
+}
+
+function hideVideo(para) {
+  para.classList.remove("show");
+  para.classList.add("hide");
+  para.innerHTML = "";
+  console.log(`${para.getAttribute("videoId")} has stopper playing`);
 }
 
 setTimeout(showVid, 1000);
