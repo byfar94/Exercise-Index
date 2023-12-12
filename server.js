@@ -1,11 +1,22 @@
 const express = require("express");
 const cors = require("cors");
+const webpack = require("webpack");
+const webpackDevMiddleware = require("webpack-dev-middleware");
 require("dotenv").config();
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
+
 const app = express();
+const config = require("./webpack.config.js");
+const compiler = webpack(config);
 
 app.use(cors());
+
+app.use(
+  webpackDevMiddleware(compiler, {
+    publicPath: config.output.publicPath,
+  })
+);
 
 app.set("view engine", "ejs");
 

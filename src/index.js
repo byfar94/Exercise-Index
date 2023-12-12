@@ -1,3 +1,6 @@
+import _ from "lodash";
+import "./style.css";
+
 async function getData() {
   try {
     let response = await fetch("http://localhost:3000/info");
@@ -68,7 +71,7 @@ function cardFactory(data) {
 async function createCards(asyncData) {
   let newData = await asyncData;
   console.log(newData);
-  domCardArray = [];
+  let domCardArray = [];
   newData.items.forEach((data) => {
     console.log(data);
     let newCard = cardFactory(data);
@@ -119,8 +122,8 @@ async function showVid() {
     pictures[i].addEventListener("click", function () {
       videos[i].classList.remove("hide");
       videos[i].classList.add("show");
-      vidContain = videos[i];
-      vidID = vidContain.getAttribute("videoId");
+      let vidContain = videos[i];
+      let vidID = vidContain.getAttribute("videoId");
       videos[
         i
       ].innerHTML = `<iframe id=player type=text/html src= https://www.youtube.com/embed/${vidID}?autoplay=1 frameborder=0 ></iframe>`;

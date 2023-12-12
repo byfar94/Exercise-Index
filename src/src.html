@@ -5,11 +5,17 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <header>
-      <h1 class="main-header">Exercise Index</h1>
+      <div id="l-header-contain">
+        <div>ExIn</div>
+        <h1 class="main-header">Exercise Index</h1>
+      </div>
+      <div class="tab-contain">
+        <button class="tab">wrist/hand</button>
+        <button class="tab">elbow/shoulder</button>
+      </div>
       <div>
         <div class="search-contain">
           <input
@@ -21,9 +27,10 @@
         </div>
       </div>
     </header>
-    <section class="exercises">
-      <div class="exercise-container"></div>
-    </section>
-    <script src="script.js"></script>
+    <main class="main">
+      <section class="exercises">
+        <div class="exercise-container"></div>
+      </section>
+    </main>
   </body>
 </html>
