@@ -44,6 +44,11 @@ function createVideoElement(el, cls, vid) {
 
 //card factory function, returns an object with HTML elements
 function cardFactory(data) {
+  let fullDesc = data.snippet.description;
+  console.log(fullDesc);
+  let descArray = fullDesc.split(",", 3);
+  console.log(descArray[0]);
+  console.log(descArray);
   let cardObj = {
     cardEl: createContainerElement("div", "card-contain"),
     imageEl: createImageElement(
@@ -52,16 +57,14 @@ function cardFactory(data) {
       data.snippet.thumbnails.high.url
     ),
     titleEl: createTextElement("h2", "card-title", data.snippet.title),
-    descEl: createTextElement(
-      "p",
-      "card-description",
-      data.snippet.description
-    ),
+    descEl: createTextElement("p", "card-description", descArray[2]),
     videoEl: createVideoElement(
       "div",
       "card-video",
       data.snippet.resourceId.videoId
     ),
+    bodyPart: descArray[0],
+    exerciseType: descArray[1],
   };
   console.log(cardObj.titleEl);
   return cardObj;
@@ -92,6 +95,7 @@ async function appendCards(array) {
     obj.cardEl.append(obj.titleEl);
     obj.cardEl.append(obj.descEl);
     obj.cardEl.append(obj.videoEl);
+    console.log(obj.exerciseType);
   });
 }
 
