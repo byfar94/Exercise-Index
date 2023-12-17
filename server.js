@@ -31,7 +31,7 @@ app.get("/info", async (req, res) => {
   console.log(json);
 });
 
-app.use(express.static("public"));
+app.use(express.static("dist"));
 
 app.listen(port, () => {
   console.log(`starting server at port ${port}`);
