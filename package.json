@@ -9,8 +9,10 @@
   "scripts": {
     "devStart": "nodemon server.js",
     "watch": "webpack --watch",
+    "start": "webpack serve --open",
+    "server": "node server.js",
     "build": "webpack",
-    "start": "node server.js"
+    "prod": "NODE_ENV=production node server.js"
   },
   "repository": {
     "type": "git",
