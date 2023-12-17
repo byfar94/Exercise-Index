@@ -1,5 +1,7 @@
 import _ from "lodash";
 import "./style.css";
+require("/images/menu.svg");
+require("/images/search.svg");
 
 async function getData() {
   try {
@@ -72,31 +74,38 @@ function cardFactory(data) {
 
 // function to create cards using cardFactory function, returns an array of objects containing cards information
 async function createCards(asyncData) {
-  let newData = await asyncData;
-  console.log(newData);
-  let domCardArray = [];
-  newData.items.forEach((data) => {
-    console.log(data);
-    let newCard = cardFactory(data);
-    console.log(newCard);
-    domCardArray.push(newCard);
-  });
-  console.log(domCardArray);
-  return domCardArray;
+  try {
+    let newData = await asyncData;
+    console.log(newData);
+    let domCardArray = [];
+    newData.items.forEach((data) => {
+      console.log(data);
+      let newCard = cardFactory(data);
+      console.log(newCard);
+      domCardArray.push(newCard);
+    });
+    console.log(domCardArray);
+    return domCardArray;
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 // function to append cards using an array (which will be t)
 async function appendCards(array) {
   let exerciseContainer = document.querySelector(".exercise-container");
-  let objArrray = await array;
-  objArrray.forEach((obj) => {
-    exerciseContainer.append(obj.cardEl);
-    obj.cardEl.append(obj.imageEl);
-    obj.cardEl.append(obj.titleEl);
-    obj.cardEl.append(obj.descEl);
-    obj.cardEl.append(obj.videoEl);
-    console.log(obj.exerciseType);
-  });
+  try {
+    let objArrray = await array;
+    objArrray.forEach((obj) => {
+      exerciseContainer.append(obj.cardEl);
+      obj.cardEl.append(obj.imageEl);
+      obj.cardEl.append(obj.titleEl);
+      obj.cardEl.append(obj.descEl);
+      obj.cardEl.append(obj.videoEl);
+    });
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 // using youtube API data to create a card for each video in a youtube setlist
@@ -147,20 +156,25 @@ setTimeout(showVid, 1000);
 
 //search functionality
 async function search() {
-  let exArray = await pageData;
-  const searchInput = document.querySelector("#search");
-  searchInput.addEventListener("input", () => {
-    let value = searchInput.value.toLowerCase();
-    exArray.forEach(function (item) {
-      console.log(item.titleEl.innerText);
-      const visable = item.titleEl.innerText.toLowerCase().includes(value);
-      if (value == "" || value == " ") {
-        item.cardEl.classList.remove("invis");
-      } else if (!visable && value != "") {
-        item.cardEl.classList.add("invis");
-      } else if (visable && value != "") item.cardEl.classList.remove("invis");
+  try {
+    let exArray = await pageData;
+    const searchInput = document.querySelector("#search");
+    searchInput.addEventListener("input", () => {
+      let value = searchInput.value.toLowerCase();
+      exArray.forEach(function (item) {
+        console.log(item.titleEl.innerText);
+        const visable = item.titleEl.innerText.toLowerCase().includes(value);
+        if (value == "" || value == " ") {
+          item.cardEl.classList.remove("invis");
+        } else if (!visable && value != "") {
+          item.cardEl.classList.add("invis");
+        } else if (visable && value != "")
+          item.cardEl.classList.remove("invis");
+      });
     });
-  });
+  } catch (err) {
+    console.log(err);
+  }
 }
 
 search();
