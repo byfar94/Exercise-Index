@@ -23,12 +23,13 @@
   },
   "homepage": "https://github.com/byfar94/Exercise-Index#readme",
   "dependencies": {
+    "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
+    "express": "^4.18.2",
     "file-loader": "^6.2.0",
     "lodash": "^4.17.21",
-    "node-fetch": "^3.3.2",
-    "express": "^4.18.2"
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "css-loader": "^6.8.1",
