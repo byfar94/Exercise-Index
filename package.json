@@ -10,8 +10,7 @@
     "devStart": "nodemon server.js",
     "watch": "webpack --watch",
     "build": "webpack",
-    "start": "node server.js",
-    "heroku-postbuild": "webpack -p"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
