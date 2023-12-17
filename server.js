@@ -20,6 +20,8 @@ app.use(
 
 app.set("view engine", "ejs");
 
+const port = process.env.PORT || 3000;
+
 app.get("/info", async (req, res) => {
   let APIKey = process.env.API_KEY;
   const apiUrl = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=PLqhofO-4kYdstIouG7AtMPWUXL1ZwvGSG&key=${APIKey}`;
@@ -31,4 +33,6 @@ app.get("/info", async (req, res) => {
 
 app.use(express.static("public"));
 
-app.listen(3000);
+app.listen(port, () => {
+  console.log(`starting server at port ${port}`);
+});
