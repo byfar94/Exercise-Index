@@ -10,8 +10,7 @@
     "devStart": "nodemon server.js",
     "watch": "webpack --watch",
     "start": "NODE_ENV=production node server.js",
-    "start:dev": "webpack serve --open --config webpack.dev.js",
-    "server": "node server.js --config webpack.dev.js",
+    "server:dev": "node server.js --config webpack.dev.js",
     "build": "webpack --config webpack.prod.js",
     "prod": "NODE_ENV=production node server.js"
   },

@@ -5,7 +5,7 @@ require("/images/search.svg");
 
 async function getData() {
   try {
-    let response = await fetch("http://localhost:3000/info");
+    let response = await fetch("info");
 
     let playlistData = await response.json();
     console.log(playlistData);

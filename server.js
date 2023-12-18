@@ -8,6 +8,7 @@ const fetch = (...args) =>
 const app = express();
 app.use(cors());
 
+//will use webpackmiddleware if using dev server, will skip below code if in production mode
 if (process.env.NODE_ENV !== "production") {
   useDevConfig();
   console.log("Looks like we are in development mode!");
@@ -33,10 +34,12 @@ const port = process.env.PORT || 3000;
 app.get("/info", async (req, res) => {
   let APIKey = process.env.API_KEY;
   const apiUrl = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=PLqhofO-4kYdstIouG7AtMPWUXL1ZwvGSG&key=${APIKey}`;
+  console.log(apiUrl);
   const fetchResponse = await fetch(apiUrl);
+  console.log(fetchResponse);
   const json = await fetchResponse.json();
-  res.json(json);
   console.log(json);
+  res.json(json);
 });
 
 app.use(express.static("dist"));
