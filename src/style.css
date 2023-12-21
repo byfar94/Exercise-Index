@@ -90,10 +90,10 @@ header input {
   justify-content: center;
   align-items: start;
   border-radius: 1rem;
-  background-color: white;
-  box-shadow: 2px 2px 10px darkgray;
   gap: 0.5rem;
   position: relative;
+  background-color: white;
+  box-shadow: 2px 2px 10px darkgray;
   overflow: hidden;
 }
 

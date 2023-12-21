@@ -2,47 +2,14 @@ import _ from "lodash";
 import "./style.css";
 require("/images/menu.svg");
 require("/images/search.svg");
-
-async function getData() {
-  try {
-    let response = await fetch("info");
-
-    let playlistData = await response.json();
-    console.log(playlistData);
-    return playlistData;
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-// element factory functions
-function createContainerElement(el, cls) {
-  let element = document.createElement(el);
-  element.classList.add(cls);
-  return element;
-}
-
-function createTextElement(el, cls, inText) {
-  let element = document.createElement(el);
-  element.classList.add(cls);
-  element.innerHTML = inText;
-  return element;
-}
-
-function createImageElement(el, cls, image) {
-  let element = document.createElement(el);
-  element.classList.add(cls);
-  element.src = image;
-  return element;
-}
-
-function createVideoElement(el, cls, vid) {
-  let element = document.createElement(el);
-  element.classList.add(cls);
-  element.classList.add("hide");
-  element.setAttribute("videoId", `${vid}`);
-  return element;
-}
+import { getData } from "./api";
+import { search } from "./search";
+import {
+  createContainerElement,
+  createTextElement,
+  createVideoElement,
+  createImageElement,
+} from "./elementFactory";
 
 //card factory function, returns an object with HTML elements
 function cardFactory(data) {
@@ -154,27 +121,4 @@ function hideVideo(para) {
 
 setTimeout(showVid, 1000);
 
-//search functionality
-async function search() {
-  try {
-    let exArray = await pageData;
-    const searchInput = document.querySelector("#search");
-    searchInput.addEventListener("input", () => {
-      let value = searchInput.value.toLowerCase();
-      exArray.forEach(function (item) {
-        console.log(item.titleEl.innerText);
-        const visable = item.titleEl.innerText.toLowerCase().includes(value);
-        if (value == "" || value == " ") {
-          item.cardEl.classList.remove("invis");
-        } else if (!visable && value != "") {
-          item.cardEl.classList.add("invis");
-        } else if (visable && value != "")
-          item.cardEl.classList.remove("invis");
-      });
-    });
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-search();
+search(pageData);
