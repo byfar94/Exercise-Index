@@ -1,12 +1,17 @@
 const express = require("express");
 const cors = require("cors");
+const bodyParser = require("body-parser");
 
 require("dotenv").config();
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 
+const db = require("./database.js");
+
 const app = express();
 app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 //will use webpackmiddleware if using dev server, will skip below code if in production mode
 if (process.env.NODE_ENV !== "production") {
@@ -46,4 +51,19 @@ app.use(express.static("dist"));
 
 app.listen(port, () => {
   console.log(`starting server at port ${port}`);
+});
+
+app.post("/exercise", (req, res) => {
+  try {
+    console.log(req.body.extype);
+    return res.json({
+      status: 200,
+      success: true,
+    });
+  } catch (error) {
+    return res.json({
+      status: 400,
+      success: false,
+    });
+  }
 });
