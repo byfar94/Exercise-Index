@@ -3,6 +3,7 @@ export {
   createTextElement,
   createImageElement,
   createVideoElement,
+  createFormElement,
 };
 
 // element factory functions
@@ -31,5 +32,12 @@ function createVideoElement(el, cls, vid) {
   element.classList.add(cls);
   element.classList.add("hide");
   element.setAttribute("videoId", `${vid}`);
+  return element;
+}
+
+function createFormElement(type, cls) {
+  let element = document.createElement("form");
+  element.classList.add(cls);
+  element.type = type;
   return element;
 }

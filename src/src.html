@@ -13,8 +13,9 @@
           <img
             src="../images/menu.svg"
             alt="menu icon"
-            width="20rem"
-            height="20rem"
+            width="30rem"
+            height="30rem"
+            id="menu-icon"
           />
         </div>
         <h1 class="main-header">Exercise Index</h1>
@@ -29,9 +30,51 @@
       </div>
     </header>
     <main class="main">
+      <div id="sidebar" class="sidebar">
+        <ul>
+          <li><a>All</a></li>
+          <li><a>Hand</a></li>
+          <li><a>Wirst/Forearm</a></li>
+          <li><a>Elbow</a></li>
+          <li><a>Shoulder</a></li>
+        </ul>
+      </div>
+      <section id="form-contain">
+        <form id="exercise-form">
+          <fieldset id="exercise-fieldset">
+            <legend>exercise card submission</legend>
+            <div>
+              <label for="extitle">exercise title</label>
+              <input type="text" id="extitle" name="extitle" />
+            </div>
+            <div>
+              <label for="extype">exercise type</label>
+              <input type="text" id="extype" name="extype" />
+            </div>
+            <div>
+              <label for="bodypart">body part</label>
+              <input type="text" id="bodypart" name="bodypart" />
+            </div>
+            <div>
+              <label for="summary">exercise summary</label>
+              <input type="text" id="summary" name="summary" />
+            </div>
+            <div>
+              <label for="videofile"> video file</label>
+              <input type="file" id="videofile" name="videofile" />
+            </div>
+            <div>
+              <input type="submit" value="submit" />
+            </div>
+          </fieldset>
+        </form>
+      </section>
       <section class="exercises">
         <div class="exercise-container"></div>
       </section>
+      <div id="form-btn-contain">
+        <button id="form-btn">+</button>
+      </div>
     </main>
   </body>
 </html>

@@ -10,6 +10,8 @@ import {
   createVideoElement,
   createImageElement,
 } from "./elementFactory";
+import { showSidebar } from "./sideMenu";
+import { revealForm } from "./form";
 
 //card factory function, returns an object with HTML elements
 function cardFactory(data) {
@@ -82,13 +84,17 @@ async function loadPage() {
     let vidData = await getData();
     let newArray = await createCards(vidData);
     appendCards(newArray);
-    return newArray;
+    search(newArray);
+    if (newArray) {
+      showSidebar();
+      revealForm();
+    }
   } catch (err) {
     console.log(err);
   }
 }
-let pageData = loadPage();
 
+loadPage();
 //event listeners
 
 async function showVid() {
@@ -120,5 +126,3 @@ function hideVideo(para) {
 }
 
 setTimeout(showVid, 1000);
-
-search(pageData);
