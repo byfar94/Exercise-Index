@@ -40,7 +40,7 @@
         </ul>
       </div>
       <section id="form-contain">
-        <form id="exercise-form">
+        <form id="exercise-form" enctype="multipart/form-data">
           <fieldset id="exercise-fieldset">
             <legend>exercise card submission</legend>
             <div>
@@ -61,8 +61,12 @@
               <input type="text" id="summary" name="summary" />
             </div>
             <div>
-              <label for="videofile"> video file</label>
-              <input type="file" id="videofile" name="videofile" />
+              <label for="imgfile"> Image file</label>
+              <input type="file" id="imgfile" name="imgfile" />
+            </div>
+            <div>
+              <label for="videoid">Video ID</label>
+              <input type="text" id="videoid" name="videoid" />
             </div>
             <div>
               <input type="submit" value="submit" />

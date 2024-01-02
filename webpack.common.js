@@ -15,6 +15,7 @@ module.exports = {
     path: path.resolve(__dirname, "dist"),
     clean: true,
     publicPath: "/",
+    assetModuleFilename: `images/[name][ext]`,
   },
   module: {
     rules: [
@@ -25,22 +26,10 @@ module.exports = {
       },
       {
         test: /\.(png|svg|jpg|jpeg|gif)$/i,
-
-        use: [
-          {
-            loader: "file-loader",
-
-            options: {
-              name: "[name].[ext]",
-
-              outputPath: "images",
-
-              publicPath: "images",
-
-              emitFile: true,
-            },
-          },
-        ],
+        type: `asset/resource`,
+        generator: {
+          filename: "images/[name][ext]", // Output images to the "images" folder
+        },
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/i,

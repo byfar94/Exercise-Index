@@ -10,24 +10,28 @@ const db = new sqlite3.Database(
     console.log("connection successful");
   }
 );
-/*
+
 // Create the exercises table if not exists
 db.run(`
-  CREATE TABLE exercises (
+CREATE TABLE IF NOT EXISTS exercises (
     id INTEGER PRIMARY KEY,
     extitle TEXT NOT NULL,
     extype TEXT,
     bodypart TEXT,
     summary TEXT,
-    video_id TEXT
+    imagepath TEXT,
+    videoid TEXT
   )
 `);
-/*
-const sql = `INSERT INTO exercises (id, extitle, extype, bodypart, summmary, video_id)``values (?,?,?,?,?,?)`;
-*/
 
-db.close((err) => {
-  if (err) console.log(err.message);
+process.on("SIGINT", () => {
+  // Close the database connection when the application is shutting down
+  db.close((err) => {
+    if (err) {
+      return console.error(err.message);
+    }
+    console.log("Closed the database connection.");
+    process.exit(0);
+  });
 });
-
 module.exports = db;

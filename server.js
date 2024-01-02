@@ -1,12 +1,14 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const sqlite3 = require("sqlite3").verbose();
+const db = require("./database.js");
+const multer = require("multer");
+const path = require("path");
 
 require("dotenv").config();
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
-
-const db = require("./database.js");
 
 const app = express();
 app.use(cors());
@@ -32,20 +34,36 @@ function useDevConfig() {
   );
 }
 
-app.set("view engine", "ejs");
-
 const port = process.env.PORT || 3000;
 
+//multer
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, __dirname + "/images");
+  },
+  filename: function (req, file, cb) {
+    const { extitle } = req.body;
+    let imgFileName = extitle.replace(/\s+/g, "");
+    const fileName = `${imgFileName}.jpeg`;
+    cb(null, fileName);
+  },
+});
+
+const upload = multer({
+  storage: storage,
+});
+
+/*
 app.get("/info", async (req, res) => {
   let APIKey = process.env.API_KEY;
   const apiUrl = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=PLqhofO-4kYdstIouG7AtMPWUXL1ZwvGSG&key=${APIKey}`;
-  console.log(apiUrl);
   const fetchResponse = await fetch(apiUrl);
   console.log(fetchResponse);
   const json = await fetchResponse.json();
   console.log(json);
   res.json(json);
 });
+*/
 
 app.use(express.static("dist"));
 
@@ -53,9 +71,32 @@ app.listen(port, () => {
   console.log(`starting server at port ${port}`);
 });
 
-app.post("/exercise", (req, res) => {
+// Post request at /exercise will add extitle, extpye, bodypart, summar, video_id into the database from front end form
+app.post("/exercise", upload.single("imgfile"), (req, res) => {
   try {
     console.log(req.body.extype);
+    console.log(req.files);
+    console.log(req.body.imgfile);
+    let exerciseTitle = req.body.extitle;
+    let imgFileName = exerciseTitle.replace(/\s+/g, "");
+    const sql = `INSERT INTO exercises (extitle, extype, bodypart, summary, imagepath, videoid) values (?,?,?,?,?,?)`;
+    console.log(sql);
+    console.log(db);
+    db.run(
+      sql,
+      [
+        `${req.body.extitle}`,
+        `${req.body.extype}`,
+        `${req.body.bodypart}`,
+        `${req.body.summary}`,
+        `../images/${imgFileName}.jpeg`,
+        `${req.body.videoid}`,
+      ],
+      (err) => {
+        if (err) return console.log(err.message);
+        else return console.log("added to database");
+      }
+    );
     return res.json({
       status: 200,
       success: true,
@@ -66,4 +107,13 @@ app.post("/exercise", (req, res) => {
       success: false,
     });
   }
+});
+
+app.get("/exercise", (req, res) => {
+  const sql = `SELECT * FROM exercises;`;
+  db.all(sql, [], (err, rows) => {
+    if (err) console.log(err.message);
+
+    res.status(200).json(rows);
+  });
 });

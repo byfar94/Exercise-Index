@@ -17,18 +17,18 @@ function formSubmit() {
 
     const fd = new FormData(form);
 
-    // pass form data to URLSearchParams() constructor
-    const searchParams = new URLSearchParams(fd);
-
-    console.log(searchParams.toString());
+    console.log(...fd);
+    console.log(fd.file);
+    console.log(fd.imgfile);
+    console.log(fd.get("imgfile"));
 
     try {
-      const response = await fetch(`http://localhost:3000/exercise`, {
+      const response = await fetch(`/exercise`, {
         method: "POST",
-        body: searchParams,
+        body: fd,
       });
       console.log(response);
-      let resData = response.json(response);
+      const resData = await response.json(response);
       console.log(resData);
     } catch (err) {
       console.log(err.message);
