@@ -8,6 +8,7 @@ import {
 } from "./elementFactory";
 import { showSidebar } from "./sideMenu";
 import { revealForm } from "./form";
+import { deleteDataHandler } from "./dataHandler";
 export { loadExCards };
 
 //card factory function, returns an object with HTML elements
@@ -21,8 +22,11 @@ function cardFactory(data) {
     titleEl: createTextElement("h2", "card-title", data.extitle),
     descEl: createTextElement("p", "card-description", data.summary),
     videoEl: createVideoElement("div", "card-video", data.videoid),
+    editEl: createContainerElement("div", "edit-btn-contain"),
+    dltBtn: createTextElement("button", "delete-btn", "Delete"),
     bodyPart: data.bodypart,
     exerciseType: data.extype,
+    id: data.id,
   };
 
   console.log(cardObj.videoEl);
@@ -60,6 +64,8 @@ async function appendCards(array) {
       obj.cardEl.append(obj.titleEl);
       obj.cardEl.append(obj.descEl);
       obj.cardEl.append(obj.videoEl);
+      obj.cardEl.append(obj.editEl);
+      obj.editEl.append(obj.dltBtn);
     });
   } catch (err) {
     console.log(err);
@@ -74,6 +80,7 @@ async function loadExCards() {
     let newArray = await createCards(vidData);
     appendCards(newArray);
     search(newArray);
+    deleteDataHandler(newArray);
     if (newArray) {
       showSidebar();
       revealForm();

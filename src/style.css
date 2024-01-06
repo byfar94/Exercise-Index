@@ -226,6 +226,16 @@ header input {
 }
 
 /* <------------------------- Media responsiveness ----------------------> */
+.pop-up-contain {
+  position: fixed;
+  z-index: 20;
+  background-color: white;
+  left: 50vw;
+  top: 50vh;
+  transform: translate(-50%, -50%);
+}
+
+/* <------------------------- Media responsiveness ----------------------> */
 
 @media (max-width: 500px) {
   .color-contain {

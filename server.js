@@ -117,3 +117,24 @@ app.get("/exercise", (req, res) => {
     res.status(200).json(rows);
   });
 });
+
+app.delete("/exercise/:id", async (req, res) => {
+  try {
+    console.log(req.params.id);
+    let cardID = req.params.id;
+    const sql = `DELETE from exercises where id = ?`;
+
+    db.run(sql, cardID, (err) => {
+      if (err) return console.error(err.message);
+    });
+    return res.json({
+      status: 200,
+      success: true,
+    });
+  } catch {
+    return res.json({
+      status: 400,
+      success: false,
+    });
+  }
+});
