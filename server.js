@@ -5,7 +5,6 @@ const sqlite3 = require("sqlite3").verbose();
 const db = require("./database.js");
 const multer = require("multer");
 const path = require("path");
-
 require("dotenv").config();
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
@@ -137,4 +136,36 @@ app.delete("/exercise/:id", async (req, res) => {
       success: false,
     });
   }
+});
+
+//firebase Auth
+const { initializeApp } = require("firebase/app");
+const { getAuth, createUserWithEmailAndPassword } = require("firebase/auth");
+const { firebaseConfig } = require("./fireBaseConfig.js");
+
+const firebaseapp = initializeApp(firebaseConfig);
+const auth = getAuth(firebaseapp);
+
+app.post("/signup", (req, res) => {
+  let email = req.body.signupemailinput;
+  let password = req.body.signuppasswordinput;
+  console.log(req.body);
+  console.log(email);
+  console.log(password);
+  createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      // Signed up
+      const user = userCredential.user;
+      // ...
+    })
+    .catch((error) => {
+      const errorMessage = error.message;
+      console.log(errorMessage);
+      // ..
+    });
+  return res.json({
+    status: 200,
+    success: true,
+    message: "added",
+  });
 });

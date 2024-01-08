@@ -1,3 +1,5 @@
+import { takeRight } from "lodash";
+
 export {
   createContainerElement,
   createTextElement,
@@ -35,9 +37,14 @@ function createVideoElement(el, cls, vid) {
   return element;
 }
 
-function createFormElement(type, cls) {
-  let element = document.createElement("form");
-  element.classList.add(cls);
-  element.type = type;
+function createFormElement(type, ID) {
+  let element = document.createElement(`${type}`);
+  element.setAttribute("id", `${ID}`);
+  if (type === `input`) {
+    element.setAttribute("name", `${ID}`);
+  }
+  if (type === `label`) {
+    element.innerText = `${ID}`;
+  }
   return element;
 }

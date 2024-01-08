@@ -17,11 +17,6 @@ function formSubmit() {
 
     const fd = new FormData(form);
 
-    console.log(...fd);
-    console.log(fd.file);
-    console.log(fd.imgfile);
-    console.log(fd.get("imgfile"));
-
     try {
       const response = await fetch(`/exercise`, {
         method: "POST",

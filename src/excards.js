@@ -9,6 +9,7 @@ import {
 import { showSidebar } from "./sideMenu";
 import { revealForm } from "./form";
 import { deleteDataHandler } from "./dataHandler";
+import { renderSignUpform, handleSignUpData } from "./loginForms";
 export { loadExCards };
 
 //card factory function, returns an object with HTML elements
@@ -84,6 +85,7 @@ async function loadExCards() {
     if (newArray) {
       showSidebar();
       revealForm();
+      renderSignUpform();
     }
   } catch (err) {
     console.log(err);
