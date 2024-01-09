@@ -1,9 +1,8 @@
-import {
-  createFormElement,
-  createContainerElement,
-  createTextElement,
-} from "./elementFactory";
+import { createFormElement, createContainerElement } from "./elementFactory";
 
+import { handleLogInData } from "./authFireBase";
+
+/*
 function createSignUpForm() {
   const signUpFormContainer = createContainerElement("div", "sign-in-contain");
   signUpFormContainer.setAttribute("id", "sign-up-container");
@@ -93,3 +92,66 @@ function handleSignUpData() {
 }
 
 export { renderSignUpform };
+*/
+
+///login form
+
+function createLogInForm() {
+  const logInFormContainer = createContainerElement("div", "sign-in-contain");
+  logInFormContainer.setAttribute("id", "log-in-container");
+  const logInForm = createFormElement("form", "log-in-form");
+  const fieldSet = createFormElement("fieldset", "log-in-fieldset");
+  const emailContain = createContainerElement("div");
+  const emailLabel = createFormElement("label", "loginemaillabel");
+  const emailInput = createFormElement("input", "loginemailinput");
+  const PasswordContain = createContainerElement("div");
+  const PasswordLabel = createFormElement("label", "loginpasswordlabel");
+  const PasswordInput = createFormElement("input", "loginpasswordinput");
+  const submitBtn = createFormElement("input", "submit-btn");
+  submitBtn.setAttribute("type", "submit");
+  submitBtn.setAttribute("value", "submit");
+
+  return {
+    logInFormContainer: logInFormContainer,
+    logInForm: logInForm,
+    fieldSet: fieldSet,
+    emailContain: emailContain,
+    emailLabel: emailLabel,
+    emailInput: emailInput,
+    PasswordContain: PasswordContain,
+    PasswordLabel: PasswordLabel,
+    PasswordInput: PasswordInput,
+    submitBtn: submitBtn,
+  };
+}
+
+function renderLogInform() {
+  const btn = document.querySelector("#log-in-btn");
+  btn.addEventListener("click", () => {
+    if (!document.querySelector("#log-in-container")) {
+      console.log("add container log in");
+      const body = document.querySelector("body");
+      console.log(body);
+      let form = createLogInForm();
+      body.append(form.logInFormContainer);
+      form.logInFormContainer.append(form.logInForm);
+      form.logInForm.append(form.fieldSet);
+      form.fieldSet.append(form.emailContain);
+      form.emailContain.append(form.emailLabel);
+      form.emailContain.append(form.emailInput);
+      form.fieldSet.append(form.PasswordContain);
+      form.PasswordContain.append(form.PasswordLabel);
+      form.PasswordContain.append(form.PasswordInput);
+      form.fieldSet.append(form.submitBtn);
+      handleLogInData();
+      return;
+    }
+    if (document.querySelector("#log-in-container")) {
+      console.log("remove container log in");
+      document.querySelector("#log-in-container").remove();
+      return;
+    }
+  });
+}
+
+export { renderLogInform };

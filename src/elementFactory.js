@@ -1,5 +1,3 @@
-import { takeRight } from "lodash";
-
 export {
   createContainerElement,
   createTextElement,

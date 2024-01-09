@@ -1,7 +1,8 @@
 import _ from "lodash";
 import "./style.css";
 require.context("../images"); //will load all images from image folder
-import { loadExCards } from "./excards";
+import { loadExCards, loadExCardsLoggedIn } from "./excards";
+
 loadExCards();
 
 async function showVid() {
