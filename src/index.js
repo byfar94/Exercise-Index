@@ -1,9 +1,11 @@
 import _ from "lodash";
 import "./style.css";
 require.context("../images"); //will load all images from image folder
-import { loadExCards, loadExCardsLoggedIn } from "./excards";
+import { loadExCards } from "./excards";
+import { myAuth } from "./authFireBase";
 
 loadExCards();
+myAuth();
 
 async function showVid() {
   let pictures = document.querySelectorAll(".card-pic");

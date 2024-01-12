@@ -7,6 +7,7 @@ const {
   signOut,
 } = require("firebase/auth");
 const { firebaseConfig } = require("../fireBaseConfig.js");
+import { startCase } from "lodash";
 
 const firebaseapp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseapp);
@@ -63,10 +64,11 @@ function handleSignOut() {
 }
 
 //auth state
-function myAuth() {
+async function myAuth() {
   onAuthStateChanged(auth, (user) => {
     let btnOut = document.querySelector("#log-out-btn");
     let btnIn = document.querySelector("#log-in-btn");
+    let formBtn = document.querySelector("#form-btn");
     console.log(btnOut.classList);
     console.log(btnIn.classList);
     if (user) {
@@ -74,9 +76,19 @@ function myAuth() {
       console.log(`user is logged in, user:${uid}`);
       btnIn.classList.add("invis");
       btnOut.classList.remove("invis");
+      let dltButtons = document.querySelectorAll(".delete-btn");
+      dltButtons.forEach((btn) => {
+        btn.classList.remove("invis");
+      });
+      formBtn.classList.remove("invis");
+      console.log(uid);
     } else {
       console.log("user signed out");
-
+      let dltButtons = document.querySelectorAll(".delete-btn");
+      dltButtons.forEach((btn) => {
+        btn.classList.add("invis");
+      });
+      formBtn.classList.add("invis");
       btnOut.classList.add("invis");
       btnIn.classList.remove("invis");
     }

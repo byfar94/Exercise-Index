@@ -10,8 +10,8 @@ import { showSidebar } from "./sideMenu";
 import { revealForm } from "./form";
 import { deleteDataHandler } from "./dataHandler";
 import { renderLogInform } from "./loginForms";
-import { renderLogOutBtn, handleSignOut, myAuth } from "./authFireBase";
-export { loadExCards, loadExCardsLoggedIn };
+import { renderLogOutBtn, handleSignOut } from "./authFireBase";
+export { loadExCards };
 
 //card factory function, returns an object with HTML elements
 function cardFactory(data) {
@@ -78,36 +78,16 @@ async function appendCards(array) {
 
 async function loadExCards() {
   try {
+    showSidebar();
+    renderLogInform();
+    renderLogOutBtn();
+    handleSignOut();
     let vidData = await getDbData();
     let newArray = await createCards(vidData);
     appendCards(newArray);
     search(newArray);
     deleteDataHandler(newArray);
     revealForm();
-    if (newArray) {
-      showSidebar();
-      renderLogInform();
-      renderLogOutBtn();
-      handleSignOut();
-      myAuth();
-    }
-  } catch (err) {
-    console.log(err);
-  }
-}
-
-async function loadExCardsLoggedIn() {
-  try {
-    let vidData = await getDbData();
-    let newArray = await createCards(vidData);
-    appendCards(newArray);
-    search(newArray);
-    deleteDataHandler(newArray);
-    revealForm();
-    if (newArray) {
-      showSidebar();
-      renderLogInform();
-    }
   } catch (err) {
     console.log(err);
   }
