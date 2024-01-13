@@ -7,8 +7,6 @@ const {
   signOut,
 } = require("firebase/auth");
 const { firebaseConfig } = require("../fireBaseConfig.js");
-import { startCase } from "lodash";
-
 const firebaseapp = initializeApp(firebaseConfig);
 const auth = getAuth(firebaseapp);
 

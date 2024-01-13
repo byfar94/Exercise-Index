@@ -6,11 +6,7 @@ import {
   createVideoElement,
   createImageElement,
 } from "./elementFactory";
-import { showSidebar } from "./sideMenu";
-import { revealForm } from "./form";
 import { deleteDataHandler } from "./dataHandler";
-import { renderLogInform } from "./loginForms";
-import { renderLogOutBtn, handleSignOut } from "./authFireBase";
 export { loadExCards };
 
 //card factory function, returns an object with HTML elements
@@ -75,7 +71,7 @@ async function appendCards(array) {
 }
 
 // using youtube API data to create a card for each video in a youtube setlist
-
+/*
 async function loadExCards() {
   try {
     showSidebar();
@@ -88,6 +84,19 @@ async function loadExCards() {
     search(newArray);
     deleteDataHandler(newArray);
     revealForm();
+  } catch (err) {
+    console.log(err);
+  }
+}
+*/
+
+async function loadExCards() {
+  try {
+    let vidData = await getDbData();
+    let newArray = await createCards(vidData);
+    appendCards(newArray);
+    search(newArray);
+    deleteDataHandler(newArray);
   } catch (err) {
     console.log(err);
   }

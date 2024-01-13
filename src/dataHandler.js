@@ -9,16 +9,27 @@ async function deleteDataHandler(array) {
       let btn = obj.dltBtn;
       btn.addEventListener("click", () => {
         let objID = obj.id;
+        console.log(objID);
+        let objTitle = obj.titleEl.innerText;
+        console.log(objTitle);
         let popUp = renderDeletePopUp();
         let popUpDltBtn = popUp.popUpD;
         let popUpCnlBtn = popUp.popUpC;
         let popUpcontainer = popUp.PopUpCon;
+        const formData = {
+          objTitle: objTitle,
+        };
+        console.log(formData);
         popUpDltBtn.addEventListener("click", async () => {
           const response = await fetch(`/exercise/${objID}`, {
             method: "delete",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
           });
           if (response.ok) {
-            window.location.reload();
+            //window.location.reload();
           } else {
             return console.log("reload error after attempting delete");
           }

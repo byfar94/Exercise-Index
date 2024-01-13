@@ -8,7 +8,7 @@ const path = require("path");
 require("dotenv").config();
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
-
+const fs = require("fs");
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -119,12 +119,21 @@ app.get("/exercise", (req, res) => {
 
 app.delete("/exercise/:id", async (req, res) => {
   try {
+    console.log(req.body.objTitle);
+    let title = req.body.objTitle;
+    let imgFileName = title.replace(/\s+/g, "");
     console.log(req.params.id);
     let cardID = req.params.id;
     const sql = `DELETE from exercises where id = ?`;
 
     db.run(sql, cardID, (err) => {
       if (err) return console.error(err.message);
+    });
+    fs.unlink(`./images/${imgFileName}.jpeg`, (err) => {
+      if (err) console.log(err);
+      else {
+        console.log(`\nDeleted file: ./images/${imgFileName}.jpeg`);
+      }
     });
     return res.json({
       status: 200,

@@ -1,5 +1,6 @@
 import { createContainerElement, createTextElement } from "./elementFactory";
 
+// creates a pop up when you click delete on an exercise card with a message and cancel/ delete button
 function createDeletePopUp() {
   return {
     PopUpContain: createContainerElement("div", "pop-up-contain"),
@@ -13,6 +14,7 @@ function createDeletePopUp() {
   };
 }
 
+// renders popup
 function renderDeletePopUp() {
   let popUp = createDeletePopUp();
   let body = document.querySelector("body");
