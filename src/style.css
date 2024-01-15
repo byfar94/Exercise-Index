@@ -27,6 +27,7 @@
 
 body {
   min-height: 100vh;
+  font-family: "Roboto", sans-serif;
 }
 
 /* responsive images/videos */
@@ -47,12 +48,19 @@ header {
   padding: 1rem;
   box-shadow: 2px 2px 10px darkgray;
   margin-bottom: 0.5rem;
+  width: 100%;
 }
 
 header div {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+#l-header-contain {
+  display: flex;
+  gap: 2rem;
+  font-size: 1.5rem;
 }
 
 .tab {
@@ -98,7 +106,6 @@ header input {
   position: relative;
   background-color: white;
   box-shadow: 2px 2px 10px darkgray;
-  overflow: hidden;
 }
 
 .card-pic {
@@ -128,6 +135,22 @@ header input {
   height: 16.5rem;
   width: 22rem;
   border-radius: 1rem 1rem 0rem 0rem;
+}
+
+.delete-btn {
+  border: none;
+  background-color: rgb(255, 221, 221);
+  width: 4rem;
+  height: 2rem;
+  margin: 0.5rem;
+  cursor: pointer;
+}
+.delete-btn:hover {
+  border: none;
+  background-color: rgb(220, 20, 60);
+  width: 4rem;
+  height: 2rem;
+  margin: 0.5rem;
 }
 
 .show {
@@ -189,13 +212,22 @@ header input {
   left: 90vw;
   top: 90vh;
   z-index: 25;
-  background-color: white;
 }
 
 #form-btn {
-  background-color: greenyellow;
-  width: 2rem;
-  height: 2rem;
+  background-color: rgb(4, 170, 109);
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+}
+
+#form-btn:hover {
+  background-color: rgb(5, 152, 98);
+  width: 2.8rem;
+  height: 2.8rem;
+  transition: 100ms ease-out;
 }
 
 #form-contain.form-in {
@@ -238,7 +270,7 @@ header input {
   pointer-events: auto;
 }
 
-/* <------------------------- Media responsiveness ----------------------> */
+/* <------------------------- pop UP form add exercises ----------------------> */
 .pop-up-contain {
   position: fixed;
   z-index: 20;
@@ -260,5 +292,14 @@ header input {
 
   header {
     flex-direction: column;
+  }
+  #l-header-contain {
+    display: flex;
+    gap: 2rem;
+    font-size: 1.5rem;
+    justify-content: space-between;
+  }
+  .search-contain {
+    margin-top: 0.75rem;
   }
 }
