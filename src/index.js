@@ -2,17 +2,19 @@ import _ from "lodash";
 import "./style.css";
 require.context("../images"); //will load all images from image folder
 import { loadExCards } from "./excards";
-import { showSidebar } from "./sideMenu";
-import { revealForm } from "./form";
+import { showSidebar, hideSidebar } from "./sideMenu";
+import { revealForm, hideForm } from "./form";
 import { renderLogInform } from "./loginForms";
 import { renderLogOutBtn, handleSignOut, myAuth } from "./authFireBase";
 
 function loadUI() {
   showSidebar();
+  hideSidebar();
   renderLogInform();
   renderLogOutBtn();
   handleSignOut();
   revealForm();
+  hideForm();
   loadExCards();
 }
 
