@@ -1,4 +1,4 @@
-import { getDbData, getDbDataBP } from "./apidb";
+import { getDbData, getDbDataBP, getDbDataET } from "./apidb";
 import { search } from "./search";
 import {
   createContainerElement,
@@ -7,7 +7,8 @@ import {
   createImageElement,
 } from "./elementFactory";
 import { deleteDataHandler } from "./dataHandler";
-export { loadExCards, loadExCardsBP };
+import { showVid } from "./video";
+export { loadExCards, loadExCardsBP, loadExCardsET };
 
 //card factory function, returns an object with HTML elements
 function cardFactory(data) {
@@ -91,25 +92,43 @@ async function loadExCards() {
 }
 */
 
+//load all exercise cards
 async function loadExCards() {
   try {
     let vidData = await getDbData();
     let newArray = await createCards(vidData);
-    appendCards(newArray);
+    await appendCards(newArray);
     search(newArray);
     deleteDataHandler(newArray);
+    showVid();
   } catch (err) {
     console.log(err);
   }
 }
 
+//load exercise card query by bodypart
 async function loadExCardsBP(bp) {
   try {
     let vidData = await getDbDataBP(bp);
     let newArray = await createCards(vidData);
-    appendCards(newArray);
+    await appendCards(newArray);
     search(newArray);
     deleteDataHandler(newArray);
+    showVid();
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+//load exercise card query by extype
+async function loadExCardsET(et) {
+  try {
+    let vidData = await getDbDataET(et);
+    let newArray = await createCards(vidData);
+    await appendCards(newArray);
+    search(newArray);
+    deleteDataHandler(newArray);
+    showVid();
   } catch (err) {
     console.log(err);
   }

@@ -117,6 +117,7 @@ app.get("/exercise", (req, res) => {
   });
 });
 
+//query by bodypart
 app.get("/exercise/bodypart/:bodypart", (req, res) => {
   console.log("boydpart backend ran");
   const bodypart = req.params.bodypart; // Corrected parameter name
@@ -130,16 +131,19 @@ app.get("/exercise/bodypart/:bodypart", (req, res) => {
   });
 });
 
-/*
-
-// Filter by Exercise Type
-app.get('/exercise/extype/:extype', (req, res) => {
-  const extype = req.params.extype;
-  // Query to filter by extype
+// query by extype
+app.get("/exercise/extype/:extype", (req, res) => {
+  console.log("extype backend ran");
+  const extype = req.params.extype; // Corrected parameter name
+  const sql = "SELECT * FROM exercises WHERE extype = ?";
+  console.log(extype);
+  db.all(sql, [extype], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+    res.json(rows);
+  });
 });
-
-
-*/
 
 app.delete("/exercise/:id", async (req, res) => {
   try {

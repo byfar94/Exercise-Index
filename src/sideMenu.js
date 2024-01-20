@@ -1,6 +1,12 @@
-import { loadExCards, loadExCardsBP } from "./excards";
+import { loadExCards, loadExCardsBP, loadExCardsET } from "./excards";
 import { myAuth } from "./authFireBase";
-export { showSidebar, hideSidebar, getBySidebarBodypart, getBySidebarAll };
+export {
+  showSidebar,
+  hideSidebar,
+  getBySidebarBodypart,
+  getBySidebarAll,
+  getBySidebarExtype,
+};
 
 function showSidebar() {
   const menuBtn = document.querySelector("#menu-icon");
@@ -34,6 +40,17 @@ function hideSidebar() {
 
 // query database by catagory (body part or exercise type), clicking all will query all exercies
 
+function getBySidebarAll() {
+  const allBtn = document.querySelector("#all-btn");
+  const headerTitle = document.querySelector("#main-header-title");
+
+  allBtn.addEventListener("click", async () => {
+    await loadExCards();
+    myAuth();
+    headerTitle.innerText = "Exercise Index";
+  });
+}
+
 function getBySidebarBodypart() {
   const listItems = document.querySelectorAll(".bp-catagory-li");
   const headerTitle = document.querySelector("#main-header-title");
@@ -50,13 +67,18 @@ function getBySidebarBodypart() {
   });
 }
 
-function getBySidebarAll() {
-  const allBtn = document.querySelector("#all-btn");
+function getBySidebarExtype() {
+  const listItems = document.querySelectorAll(".et-catagory-li");
   const headerTitle = document.querySelector("#main-header-title");
 
-  allBtn.addEventListener("click", async () => {
-    await loadExCards();
-    myAuth();
-    headerTitle.innerText = "Exercise Index";
+  listItems.forEach((item) => {
+    item.addEventListener("click", async () => {
+      console.log(item);
+      let extype = item.innerText;
+      console.log(extype);
+      await loadExCardsET(extype);
+      myAuth();
+      headerTitle.innerText = `${extype} exercises`;
+    });
   });
 }
