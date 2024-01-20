@@ -2,7 +2,12 @@ import _ from "lodash";
 import "./style.css";
 require.context("../images"); //will load all images from image folder
 import { loadExCards } from "./excards";
-import { showSidebar, hideSidebar } from "./sideMenu";
+import {
+  showSidebar,
+  hideSidebar,
+  getBySidebarBodypart,
+  getBySidebarAll,
+} from "./sideMenu";
 import { revealForm, hideForm } from "./form";
 import { renderLogInform } from "./loginForms";
 import { renderLogOutBtn, handleSignOut, myAuth } from "./authFireBase";
@@ -15,10 +20,12 @@ function loadUI() {
   handleSignOut();
   revealForm();
   hideForm();
-  loadExCards();
+  getBySidebarBodypart();
+  getBySidebarAll();
 }
 
 loadUI();
+loadExCards();
 myAuth();
 
 async function showVid() {

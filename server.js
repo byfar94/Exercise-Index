@@ -117,6 +117,30 @@ app.get("/exercise", (req, res) => {
   });
 });
 
+app.get("/exercise/bodypart/:bodypart", (req, res) => {
+  console.log("boydpart backend ran");
+  const bodypart = req.params.bodypart; // Corrected parameter name
+  const sql = "SELECT * FROM exercises WHERE bodypart = ?";
+  console.log(bodypart);
+  db.all(sql, [bodypart], (err, rows) => {
+    if (err) {
+      return res.status(500).json({ error: "Internal Server Error" });
+    }
+    res.json(rows);
+  });
+});
+
+/*
+
+// Filter by Exercise Type
+app.get('/exercise/extype/:extype', (req, res) => {
+  const extype = req.params.extype;
+  // Query to filter by extype
+});
+
+
+*/
+
 app.delete("/exercise/:id", async (req, res) => {
   try {
     console.log(req.body.objTitle);

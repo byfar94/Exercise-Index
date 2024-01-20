@@ -1,4 +1,6 @@
-export { showSidebar, hideSidebar };
+import { loadExCards, loadExCardsBP } from "./excards";
+import { myAuth } from "./authFireBase";
+export { showSidebar, hideSidebar, getBySidebarBodypart, getBySidebarAll };
 
 function showSidebar() {
   const menuBtn = document.querySelector("#menu-icon");
@@ -30,20 +32,31 @@ function hideSidebar() {
   });
 }
 
-/*
-// will allow hideSidebar to work even when the log-in-container doesn't exist
-function ifLogInContain(event) {
-  if (
-    document.querySelector("#log-in-container") &&
-    !document.querySelector("#log-in-container").contains(event.target)
-  ) {
-    return true;
-  }
-  if (!document.querySelector("#log-in-container")) {
-    return true;
-  } else {
-    return false;
-  }
+// query database by catagory (body part or exercise type), clicking all will query all exercies
+
+function getBySidebarBodypart() {
+  const listItems = document.querySelectorAll(".bp-catagory-li");
+  const headerTitle = document.querySelector("#main-header-title");
+
+  listItems.forEach((item) => {
+    item.addEventListener("click", async () => {
+      console.log(item);
+      let bodypart = item.innerText;
+      console.log(bodypart);
+      await loadExCardsBP(bodypart);
+      myAuth();
+      headerTitle.innerText = `${bodypart} exercises`;
+    });
+  });
 }
 
-*/
+function getBySidebarAll() {
+  const allBtn = document.querySelector("#all-btn");
+  const headerTitle = document.querySelector("#main-header-title");
+
+  allBtn.addEventListener("click", async () => {
+    await loadExCards();
+    myAuth();
+    headerTitle.innerText = "Exercise Index";
+  });
+}

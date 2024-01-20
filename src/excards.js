@@ -1,4 +1,4 @@
-import { getDbData } from "./apidb";
+import { getDbData, getDbDataBP } from "./apidb";
 import { search } from "./search";
 import {
   createContainerElement,
@@ -7,7 +7,7 @@ import {
   createImageElement,
 } from "./elementFactory";
 import { deleteDataHandler } from "./dataHandler";
-export { loadExCards };
+export { loadExCards, loadExCardsBP };
 
 //card factory function, returns an object with HTML elements
 function cardFactory(data) {
@@ -54,6 +54,7 @@ async function createCards(asyncData) {
 // function to append cards using an array (which will be t)
 async function appendCards(array) {
   let exerciseContainer = document.querySelector(".exercise-container");
+  exerciseContainer.innerHTML = "";
   try {
     let objArrray = await array;
     objArrray.forEach((obj) => {
@@ -93,6 +94,18 @@ async function loadExCards() {
 async function loadExCards() {
   try {
     let vidData = await getDbData();
+    let newArray = await createCards(vidData);
+    appendCards(newArray);
+    search(newArray);
+    deleteDataHandler(newArray);
+  } catch (err) {
+    console.log(err);
+  }
+}
+
+async function loadExCardsBP(bp) {
+  try {
+    let vidData = await getDbDataBP(bp);
     let newArray = await createCards(vidData);
     appendCards(newArray);
     search(newArray);
