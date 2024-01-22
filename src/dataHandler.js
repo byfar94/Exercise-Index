@@ -11,6 +11,7 @@ async function deleteDataHandler(array) {
         let objID = obj.id;
         console.log(objID);
         let objTitle = obj.titleEl.innerText;
+        let objImagePath = obj.imageEl.src;
         console.log(objTitle);
         let popUp = renderDeletePopUp();
         let popUpDltBtn = popUp.popUpD;
@@ -18,6 +19,7 @@ async function deleteDataHandler(array) {
         let popUpcontainer = popUp.PopUpCon;
         const formData = {
           objTitle: objTitle,
+          objImagePath: objImagePath,
         };
         console.log(formData);
         popUpDltBtn.addEventListener("click", async () => {

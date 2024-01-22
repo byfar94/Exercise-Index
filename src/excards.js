@@ -17,7 +17,11 @@ function cardFactory(data) {
 
   let cardObj = {
     cardEl: createContainerElement("div", "card-contain"),
-    imageEl: createImageElement("img", "card-pic", data.imagepath),
+    imageEl: createImageElement(
+      "img",
+      "card-pic",
+      `https://exercise-index-images.s3.amazonaws.com/${data.imagepath}`
+    ),
     titleEl: createTextElement("h2", "card-title", data.extitle),
     descEl: createTextElement("p", "card-description", data.summary),
     videoEl: createVideoElement("div", "card-video", data.videoid),

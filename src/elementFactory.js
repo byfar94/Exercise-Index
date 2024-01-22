@@ -41,8 +41,6 @@ function createFormElement(type, ID) {
   if (type === `input`) {
     element.setAttribute("name", `${ID}`);
   }
-  if (type === `label`) {
-    element.innerText = `${ID}`;
-  }
+
   return element;
 }

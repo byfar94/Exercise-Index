@@ -1,14 +1,19 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const sqlite3 = require("sqlite3").verbose();
-const db = require("./database.js");
+const database = require("./database.js");
 const multer = require("multer");
 const path = require("path");
 require("dotenv").config();
 const fetch = (...args) =>
   import("node-fetch").then(({ default: fetch }) => fetch(...args));
 const fs = require("fs");
+
+//AWS
+const s3 = require("./bucket.js");
+const { PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+const bucketName = process.env.AWS_BUCKET_NAME;
+//---
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -35,34 +40,8 @@ function useDevConfig() {
 
 const port = process.env.PORT || 3000;
 
-//multer
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, __dirname + "/images");
-  },
-  filename: function (req, file, cb) {
-    const { extitle } = req.body;
-    let imgFileName = extitle.replace(/\s+/g, "");
-    const fileName = `${imgFileName}.jpeg`;
-    cb(null, fileName);
-  },
-});
-
-const upload = multer({
-  storage: storage,
-});
-
-/*
-app.get("/info", async (req, res) => {
-  let APIKey = process.env.API_KEY;
-  const apiUrl = `https://youtube.googleapis.com/youtube/v3/playlistItems?part=snippet&playlistId=PLqhofO-4kYdstIouG7AtMPWUXL1ZwvGSG&key=${APIKey}`;
-  const fetchResponse = await fetch(apiUrl);
-  console.log(fetchResponse);
-  const json = await fetchResponse.json();
-  console.log(json);
-  res.json(json);
-});
-*/
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 app.use(express.static("dist"));
 
@@ -71,24 +50,35 @@ app.listen(port, () => {
 });
 
 // Post request at /exercise will add extitle, extpye, bodypart, summar, video_id into the database from front end form
-app.post("/exercise", upload.single("imgfile"), (req, res) => {
+app.post("/exercise", upload.single("imgfile"), async (req, res) => {
   try {
     console.log(req.body.extype);
-    console.log(req.files);
-    console.log(req.body.imgfile);
+    console.log(req.file.buffer);
     let exerciseTitle = req.body.extitle;
-    let imgFileName = exerciseTitle.replace(/\s+/g, "");
+    let exerciseTitleNoSpace = exerciseTitle.replace(/\s+/g, "");
+    let imgFileName = `${exerciseTitleNoSpace}.jpeg`;
+    const params = {
+      Bucket: bucketName,
+      Key: imgFileName,
+      Body: req.file.buffer,
+    };
+    try {
+      const command = new PutObjectCommand(params);
+      await s3.send(command);
+      console.log("Object successfully uploaded to S3");
+    } catch (error) {
+      console.error("Error uploading object to S3:", error);
+    }
     const sql = `INSERT INTO exercises (extitle, extype, bodypart, summary, imagepath, videoid) values (?,?,?,?,?,?)`;
     console.log(sql);
-    console.log(db);
-    db.run(
+    database.query(
       sql,
       [
         `${req.body.extitle}`,
         `${req.body.extype}`,
         `${req.body.bodypart}`,
         `${req.body.summary}`,
-        `../images/${imgFileName}.jpeg`,
+        `${imgFileName}`,
         `${req.body.videoid}`,
       ],
       (err) => {
@@ -108,12 +98,17 @@ app.post("/exercise", upload.single("imgfile"), (req, res) => {
   }
 });
 
-app.get("/exercise", (req, res) => {
-  const sql = `SELECT * FROM exercises;`;
-  db.all(sql, [], (err, rows) => {
-    if (err) console.log(err.message);
-
-    res.status(200).json(rows);
+//query all
+app.get("/exercise", async (req, res) => {
+  const sql = `SELECT * FROM exercises`;
+  database.query(sql, function (err, result) {
+    if (err) {
+      console.error("Error executing SELECT query:", err);
+      res.status(500).send("Internal Server Error");
+      return;
+    }
+    console.log(result);
+    res.status(200).json(result);
   });
 });
 
@@ -123,7 +118,7 @@ app.get("/exercise/bodypart/:bodypart", (req, res) => {
   const bodypart = req.params.bodypart; // Corrected parameter name
   const sql = "SELECT * FROM exercises WHERE bodypart = ?";
   console.log(bodypart);
-  db.all(sql, [bodypart], (err, rows) => {
+  database.query(sql, [bodypart], (err, rows) => {
     if (err) {
       return res.status(500).json({ error: "Internal Server Error" });
     }
@@ -137,7 +132,7 @@ app.get("/exercise/extype/:extype", (req, res) => {
   const extype = req.params.extype; // Corrected parameter name
   const sql = "SELECT * FROM exercises WHERE extype = ?";
   console.log(extype);
-  db.all(sql, [extype], (err, rows) => {
+  database.query(sql, [extype], (err, rows) => {
     if (err) {
       return res.status(500).json({ error: "Internal Server Error" });
     }
@@ -145,23 +140,37 @@ app.get("/exercise/extype/:extype", (req, res) => {
   });
 });
 
+// delete request
 app.delete("/exercise/:id", async (req, res) => {
   try {
+    console.log(req.body.objImagePath);
     console.log(req.body.objTitle);
-    let title = req.body.objTitle;
-    let imgFileName = title.replace(/\s+/g, "");
     console.log(req.params.id);
     let cardID = req.params.id;
-    const sql = `DELETE from exercises where id = ?`;
 
-    db.run(sql, cardID, (err) => {
-      if (err) return console.error(err.message);
-    });
-    fs.unlink(`./images/${imgFileName}.jpeg`, (err) => {
-      if (err) console.log(err);
-      else {
-        console.log(`\nDeleted file: ./images/${imgFileName}.jpeg`);
+    let sqlSel = `SELECT * FROM exercises WHERE id = ?`;
+
+    database.query(sqlSel, [cardID], async (err, result) => {
+      if (err) return console.log(err.message);
+      const imagepath = result[0]?.imagepath;
+      const params = {
+        Bucket: bucketName,
+        Key: imagepath,
+      };
+
+      try {
+        const deleteCommand = new DeleteObjectCommand(params);
+        await s3.send(deleteCommand);
+        console.log(`Object ${imagepath} successfully deleted from S3`);
+      } catch (error) {
+        console.error("Error deleting object from S3:", error);
       }
+    });
+
+    const sqlDlt = `DELETE from exercises where id = ?`;
+
+    database.query(sqlDlt, [cardID], (err) => {
+      if (err) return console.error(err.message);
     });
     return res.json({
       status: 200,

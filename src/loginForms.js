@@ -103,9 +103,11 @@ function createLogInForm() {
   const fieldSet = createFormElement("fieldset", "log-in-fieldset");
   const emailContain = createContainerElement("div");
   const emailLabel = createFormElement("label", "loginemaillabel");
+  emailLabel.innerText = "Email";
   const emailInput = createFormElement("input", "loginemailinput");
   const PasswordContain = createContainerElement("div");
   const PasswordLabel = createFormElement("label", "loginpasswordlabel");
+  PasswordLabel.innerText = "Password";
   const PasswordInput = createFormElement("input", "loginpasswordinput");
   const submitBtn = createFormElement("input", "submit-btn");
   submitBtn.setAttribute("type", "submit");

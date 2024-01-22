@@ -1,37 +1,20 @@
-const sqlite3 = require("sqlite3").verbose();
+// mysql
+require("dotenv").config();
 
-// Connect to SQLite database
-const db = new sqlite3.Database(
-  "./database.db",
-  sqlite3.OPEN_READWRITE,
-  (err) => {
-    if (err) return console.log(err.message);
-
-    console.log("connection successful");
-  }
-);
-
-// Create the exercises table if not exists
-db.run(`
-CREATE TABLE IF NOT EXISTS exercises (
-    id INTEGER PRIMARY KEY,
-    extitle TEXT NOT NULL,
-    extype TEXT,
-    bodypart TEXT,
-    summary TEXT,
-    imagepath TEXT,
-    videoid TEXT
-  )
-`);
-
-process.on("SIGINT", () => {
-  // Close the database connection when the application is shutting down
-  db.close((err) => {
-    if (err) {
-      return console.error(err.message);
-    }
-    console.log("Closed the database connection.");
-    process.exit(0);
-  });
+var mysql = require("mysql");
+var database = mysql.createConnection({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
 });
-module.exports = db;
+
+database.connect((err) => {
+  if (err) {
+    throw err;
+  } else {
+    console.log("connected to mySQL DB");
+  }
+});
+
+module.exports = database;
