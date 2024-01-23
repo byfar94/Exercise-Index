@@ -14,6 +14,8 @@ const s3 = require("./bucket.js");
 const { PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
 const bucketName = process.env.AWS_BUCKET_NAME;
 //---
+const sharp = require("sharp");
+
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -49,7 +51,7 @@ app.listen(port, () => {
   console.log(`starting server at port ${port}`);
 });
 
-// Post request at /exercise will add extitle, extpye, bodypart, summar, video_id into the database from front end form
+// Post request at /exercise will add extitle, extpye, bodypart, summar, video_id into the database from front end form, will add picture to s3 bucket
 app.post("/exercise", upload.single("imgfile"), async (req, res) => {
   try {
     console.log(req.body.extype);
@@ -57,10 +59,26 @@ app.post("/exercise", upload.single("imgfile"), async (req, res) => {
     let exerciseTitle = req.body.extitle;
     let exerciseTitleNoSpace = exerciseTitle.replace(/\s+/g, "");
     let imgFileName = `${exerciseTitleNoSpace}.jpeg`;
+
+    const fileBuffer = req.file.buffer;
+
+    // Get the original width and height of the image
+    const { width, height } = await sharp(fileBuffer).metadata();
+
+    // Calculate the new dimensions by halving both width and height
+    const newWidth = Math.round(width / 2);
+    const newHeight = Math.round(height / 2);
+
+    // Convert and resize the image using sharp
+    const resizedImageBuffer = await sharp(fileBuffer)
+      .resize({ width: newWidth, height: newHeight })
+      .jpeg({ quality: 90 })
+      .toBuffer();
+
     const params = {
       Bucket: bucketName,
       Key: imgFileName,
-      Body: req.file.buffer,
+      Body: resizedImageBuffer,
     };
     try {
       const command = new PutObjectCommand(params);
