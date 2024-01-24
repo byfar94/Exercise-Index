@@ -10,12 +10,16 @@ const createExercisesTableQuery = `CREATE TABLE IF NOT EXISTS exercises (
   videoid VARCHAR(50)
 )`;
 
-database.query(createExercisesTableQuery, (err, result) => {
-  if (err) {
+async function createTable() {
+  try {
+    const result = await database.query(createExercisesTableQuery);
+    console.log('"exercises" table created successfully!');
+    console.log(result);
+  } catch (err) {
     console.error('Error creating "exercises" table:', err);
-    return;
+  } finally {
+    database.end(); // Close the database connection
   }
-  console.log('"exercises" table created successfully!');
-  console.log(result);
-  database.end(); // Close the database connection
-});
+}
+
+createTable();

@@ -12,6 +12,7 @@ const fs = require("fs");
 //AWS
 const s3 = require("./bucket.js");
 const { PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+
 const bucketName = process.env.AWS_BUCKET_NAME;
 //---
 const sharp = require("sharp");
