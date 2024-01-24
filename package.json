@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "exercise-index",
   "engines": {
-    "node": ">=18.17.0",
-    "npm": "8.19.2"
+    "node": "20.5.0",
+    "npm": "10.3.0"
   },
   "scripts": {
     "devStart": "nodemon server.js",
