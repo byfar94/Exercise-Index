@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "exercise-index",
   "engines": {
-    "node": "v18.12.0",
+    "node": ">=18.17.0",
     "npm": "8.19.2"
   },
   "scripts": {
