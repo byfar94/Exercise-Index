@@ -8,6 +8,7 @@ import {
 } from "./elementFactory";
 import { deleteDataHandler } from "./dataHandler";
 import { showVid } from "./video";
+import { createEditCardFormSelect } from "./editFormBtn";
 export { loadExCards, loadExCardsBP, loadExCardsET };
 
 //card factory function, returns an object with HTML elements
@@ -27,6 +28,7 @@ function cardFactory(data) {
     videoEl: createVideoElement("div", "card-video", data.videoid),
     editEl: createContainerElement("div", "edit-btn-contain"),
     dltBtn: createTextElement("button", "delete-btn", "Delete"),
+    editForm: createEditCardFormSelect(),
     bodyPart: data.bodypart,
     exerciseType: data.extype,
     id: data.id,
@@ -70,6 +72,7 @@ async function appendCards(array) {
       obj.cardEl.append(obj.videoEl);
       obj.cardEl.append(obj.editEl);
       obj.editEl.append(obj.dltBtn);
+      obj.editEl.append(obj.editForm);
     });
   } catch (err) {
     console.log(err);

@@ -37,8 +37,10 @@ function createVideoElement(el, cls, vid) {
 
 function createFormElement(type, ID) {
   let element = document.createElement(`${type}`);
-  element.setAttribute("id", `${ID}`);
-  if (type === `input`) {
+  if (type !== "option") {
+    element.setAttribute("id", `${ID}`);
+  }
+  if (type === `input` || type === "select") {
     element.setAttribute("name", `${ID}`);
   }
 

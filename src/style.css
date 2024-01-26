@@ -156,6 +156,11 @@ header input {
   margin: 0.5rem;
 }
 
+.edit-btn-contain {
+  display: flex;
+  align-items: center;
+}
+
 .show {
   z-index: 5;
 }

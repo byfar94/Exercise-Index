@@ -78,6 +78,10 @@ async function myAuth() {
       dltButtons.forEach((btn) => {
         btn.classList.remove("invis");
       });
+      let selectEdit = document.querySelectorAll(".edit-select-form");
+      selectEdit.forEach((select) => {
+        select.classList.remove("invis");
+      });
       formBtn.classList.remove("invis");
       console.log(uid);
     } else {
@@ -85,6 +89,10 @@ async function myAuth() {
       let dltButtons = document.querySelectorAll(".delete-btn");
       dltButtons.forEach((btn) => {
         btn.classList.add("invis");
+      });
+      let selectEdit = document.querySelectorAll(".edit-select-form");
+      selectEdit.forEach((select) => {
+        select.classList.add("invis");
       });
       formBtn.classList.add("invis");
       btnOut.classList.add("invis");
