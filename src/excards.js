@@ -8,13 +8,14 @@ import {
 } from "./elementFactory";
 import { deleteDataHandler } from "./dataHandler";
 import { showVid } from "./video";
-import { createEditCardFormSelect } from "./editFormBtn";
+import { createEditCardFormSelect, editFormSubmit } from "./editFormBtn";
 export { loadExCards, loadExCardsBP, loadExCardsET };
 
 //card factory function, returns an object with HTML elements
 function cardFactory(data) {
   console.log(`${data.imagepath}`);
   console.log(`${data.videoid}`);
+  let cardEditFormSelect = createEditCardFormSelect();
 
   let cardObj = {
     cardEl: createContainerElement("div", "card-contain"),
@@ -28,7 +29,8 @@ function cardFactory(data) {
     videoEl: createVideoElement("div", "card-video", data.videoid),
     editEl: createContainerElement("div", "edit-btn-contain"),
     dltBtn: createTextElement("button", "delete-btn", "Delete"),
-    editForm: createEditCardFormSelect(),
+    editForm: cardEditFormSelect.form,
+    editSelect: cardEditFormSelect.select,
     bodyPart: data.bodypart,
     exerciseType: data.extype,
     id: data.id,
@@ -107,6 +109,7 @@ async function loadExCards() {
     await appendCards(newArray);
     search(newArray);
     deleteDataHandler(newArray);
+    editFormSubmit(newArray);
     showVid();
   } catch (err) {
     console.log(err);
@@ -121,6 +124,7 @@ async function loadExCardsBP(bp) {
     await appendCards(newArray);
     search(newArray);
     deleteDataHandler(newArray);
+    editFormSubmit(newArray);
     showVid();
   } catch (err) {
     console.log(err);
@@ -135,6 +139,7 @@ async function loadExCardsET(et) {
     await appendCards(newArray);
     search(newArray);
     deleteDataHandler(newArray);
+    editFormSubmit(newArray);
     showVid();
   } catch (err) {
     console.log(err);

@@ -24,7 +24,7 @@ async function deleteDataHandler(array) {
         console.log(formData);
         popUpDltBtn.addEventListener("click", async () => {
           const response = await fetch(`/exercise/${objID}`, {
-            method: "delete",
+            method: "DELETE",
             headers: {
               "Content-Type": "application/json",
             },

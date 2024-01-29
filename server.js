@@ -202,3 +202,59 @@ app.delete("/exercise/:id", async (req, res) => {
     });
   }
 });
+
+//edit (patch) database
+
+app.patch("/exercise/:id", async (req, res) => {
+  try {
+    console.log(req.body);
+    console.log(req.params.id);
+    let id = req.params.id;
+    if (req.body.videoid) {
+      let videoid = req.body.videoid;
+      let sql = "UPDATE exercises SET videoid = ? WHERE id = ?";
+      database.query(sql, [videoid, id], (err, results) => {
+        if (err) {
+          console.error("An error occurred while executing the query");
+          throw err;
+        }
+
+        console.log("Update successful", results);
+      });
+    }
+    if (req.body.extitle) {
+      let extitle = req.body.extitle;
+      let sql = "UPDATE exercises SET extitle = ? WHERE id = ?";
+      database.query(sql, [extitle, id], (err, results) => {
+        if (err) {
+          console.error("An error occurred while executing the query");
+          throw err;
+        }
+
+        console.log("Update successful", results);
+      });
+    }
+    if (req.body.summary) {
+      let summary = req.body.summary;
+      let sql = "UPDATE exercises SET summary = ? WHERE id = ?";
+      database.query(sql, [summary, id], (err, results) => {
+        if (err) {
+          console.error("An error occurred while executing the query");
+          throw err;
+        }
+
+        console.log("Update successful", results);
+      });
+    }
+
+    return res.json({
+      status: 200,
+      success: true,
+    });
+  } catch {
+    return res.json({
+      status: 400,
+      success: false,
+    });
+  }
+});

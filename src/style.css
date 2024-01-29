@@ -253,6 +253,18 @@ header input {
   padding: 1rem;
 }
 
+/* <-------------------------Text Edit form ----------------------> */
+
+#text-edit-form {
+  position: fixed;
+  z-index: 20;
+  background-color: white;
+  left: 50vw;
+  top: 50vh;
+  transform: translate(-50%, -50%);
+  padding: 1rem;
+}
+
 /* <------------------------- background ----------------------> */
 #background {
   top: 0;
