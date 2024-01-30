@@ -1,4 +1,5 @@
 import { renderDeletePopUp } from "./deletePopUp";
+import { loadExCards } from "./excards";
 export { deleteDataHandler };
 
 // will loop through an array (array of exercise cards in excards.js) and will add event listen to both delete buttons on the exercises cards and event listerners on pop up buttons
@@ -31,7 +32,8 @@ async function deleteDataHandler(array) {
             body: JSON.stringify(formData),
           });
           if (response.ok) {
-            //window.location.reload();
+            loadExCards();
+            popUpcontainer.remove();
           } else {
             return console.log("reload error after attempting delete");
           }

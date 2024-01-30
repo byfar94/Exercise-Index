@@ -65,24 +65,29 @@
             <legend>Add Exercise Card</legend>
             <div>
               <label for="extitle">exercise title</label>
-              <input type="text" id="extitle" name="extitle" />
+              <input type="text" id="extitle" name="extitle" required />
             </div>
             <div>
               <label for="extype">exercise type</label>
-              <input type="text" id="extype" name="extype" />
+              <input type="text" id="extype" name="extype" required />
             </div>
             -
             <div>
               <label for="bodypart">body part</label>
-              <input type="text" id="bodypart" name="bodypart" />
+              <input type="text" id="bodypart" name="bodypart" required />
             </div>
             <div>
               <label for="summary">exercise summary</label>
-              <textarea id="summary" name="summary" rows="6"></textarea>
+              <textarea
+                id="summary"
+                name="summary"
+                rows="6"
+                required
+              ></textarea>
             </div>
             <div>
               <label for="imgfile"> Image file</label>
-              <input type="file" id="imgfile" name="imgfile" />
+              <input type="file" id="imgfile" name="imgfile" required />
             </div>
             <div>
               <label for="videoid">Video ID</label>
