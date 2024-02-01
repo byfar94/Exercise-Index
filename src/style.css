@@ -86,6 +86,16 @@ header input {
   flex-shrink: 0;
 }
 
+.cat-title-contain {
+  grid-column: 1 / -1;
+  display: flex;
+}
+
+.cat-title {
+  display: flex;
+  flex-direction: row;
+}
+
 /* <------------------------- Exercise Cards ----------------------> */
 .exercises {
   flex: 0 0 100%;

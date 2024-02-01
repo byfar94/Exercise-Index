@@ -42,18 +42,15 @@ function hideSidebar() {
 
 function getBySidebarAll() {
   const allBtn = document.querySelector("#all-btn");
-  const headerTitle = document.querySelector("#main-header-title");
 
   allBtn.addEventListener("click", async () => {
     await loadExCards();
     myAuth();
-    headerTitle.innerText = "Exercise Index";
   });
 }
 
 function getBySidebarBodypart() {
   const listItems = document.querySelectorAll(".bp-catagory-li");
-  const headerTitle = document.querySelector("#main-header-title");
 
   listItems.forEach((item) => {
     item.addEventListener("click", async () => {
@@ -62,14 +59,12 @@ function getBySidebarBodypart() {
       console.log(bodypart);
       await loadExCardsBP(bodypart);
       myAuth();
-      headerTitle.innerText = `${bodypart} exercises`;
     });
   });
 }
 
 function getBySidebarExtype() {
   const listItems = document.querySelectorAll(".et-catagory-li");
-  const headerTitle = document.querySelector("#main-header-title");
 
   listItems.forEach((item) => {
     item.addEventListener("click", async () => {
@@ -78,7 +73,6 @@ function getBySidebarExtype() {
       console.log(extype);
       await loadExCardsET(extype);
       myAuth();
-      headerTitle.innerText = `${extype} exercises`;
     });
   });
 }

@@ -9,6 +9,7 @@ import {
 import { deleteDataHandler } from "./dataHandler";
 import { showVid } from "./video";
 import { createEditCardFormSelect, editFormSubmit } from "./editFormBtn";
+import { createCatagoryTitle } from "./catagoryTitle";
 export { loadExCards, loadExCardsBP, loadExCardsET };
 
 //card factory function, returns an object with HTML elements
@@ -107,6 +108,7 @@ async function loadExCards() {
     let vidData = await getDbData();
     let newArray = await createCards(vidData);
     await appendCards(newArray);
+    createCatagoryTitle("All exercise");
     search(newArray);
     deleteDataHandler(newArray);
     editFormSubmit(newArray);
@@ -122,6 +124,7 @@ async function loadExCardsBP(bp) {
     let vidData = await getDbDataBP(bp);
     let newArray = await createCards(vidData);
     await appendCards(newArray);
+    createCatagoryTitle(bp + " exercises");
     search(newArray);
     deleteDataHandler(newArray);
     editFormSubmit(newArray);
@@ -137,6 +140,7 @@ async function loadExCardsET(et) {
     let vidData = await getDbDataET(et);
     let newArray = await createCards(vidData);
     await appendCards(newArray);
+    createCatagoryTitle(et + " exercises");
     search(newArray);
     deleteDataHandler(newArray);
     editFormSubmit(newArray);
