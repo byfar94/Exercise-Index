@@ -1,5 +1,6 @@
 import { createFormElement } from "./elementFactory";
 import { createTextEditForm } from "./editPopUp";
+import { loadExCards } from "./excards";
 
 function createEditCardFormSelect() {
   const form = createFormElement("form", "edit-select-form");
@@ -52,7 +53,7 @@ async function editFormSubmit(array) {
         const btn = textEditForm.textSubmitBtn;
         console.log(textEditForm.form);
         console.log(textEditForm.textInput);
-        textEditHandler(btn, id, `videoid`);
+        textEditHandler(textEditForm.form, btn, id, `videoid`);
       }
       if (editSelect.value === `Title`) {
         console.log("you selected to edit a title");
@@ -60,7 +61,7 @@ async function editFormSubmit(array) {
         const btn = textEditForm.textSubmitBtn;
         console.log(textEditForm.form);
         console.log(textEditForm.textInput);
-        textEditHandler(btn, id, `extitle`);
+        textEditHandler(textEditForm.form, btn, id, `extitle`);
       }
       if (editSelect.value === `Summary`) {
         console.log("you selected to edit a summary");
@@ -68,7 +69,7 @@ async function editFormSubmit(array) {
         const btn = textEditForm.textSubmitBtn;
         console.log(textEditForm.form);
         console.log(textEditForm.textInput);
-        textEditHandler(btn, id, `summary`);
+        textEditHandler(textEditForm.form, btn, id, `summary`);
       } else {
         return;
       }
@@ -76,7 +77,7 @@ async function editFormSubmit(array) {
   });
 }
 
-function textEditHandler(btn, ID, catagory) {
+function textEditHandler(textEditForm, btn, ID, catagory) {
   btn.addEventListener("click", async (e) => {
     e.preventDefault();
 
@@ -93,14 +94,15 @@ function textEditHandler(btn, ID, catagory) {
       body: JSON.stringify(formData),
     });
     if (response.ok) {
-      //window.location.reload();
+      console.log("edit ran");
+      console.log(response);
+      const resData = await response.json();
+      console.log(resData);
+      loadExCards();
+      textEditForm.remove();
     } else {
       return console.log("error after attempting edit");
     }
-    console.log("edit ran");
-    console.log(response);
-    const resData = await response.json();
-    return resData;
   });
 }
 
