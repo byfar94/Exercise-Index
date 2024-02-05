@@ -5,8 +5,6 @@ import { loadExCards } from "./excards";
 function createEditCardFormSelect() {
   const form = createFormElement("form", "edit-select-form");
   form.classList.add("edit-select-form");
-  const label = createFormElement("label", "edit-select-label");
-  label.setAttribute("for", "edit-options");
   const select = createFormElement("select", "edit-options");
   const optionTitle = createFormElement("option", "option-title");
   optionTitle.innerText = "Title";
@@ -23,15 +21,14 @@ function createEditCardFormSelect() {
     option.classList.add("option-edit");
   });
   inputSubmit.setAttribute("type", "submit");
-  appendFormSelect(form, label, select, optionArray, inputSubmit);
+  appendFormSelect(form, select, optionArray, inputSubmit);
   return {
     form: form,
     select: select,
   };
 }
 
-function appendFormSelect(form, label, select, arrrayOfOptions, input) {
-  form.append(label);
+function appendFormSelect(form, select, arrrayOfOptions, input) {
   form.append(select);
   arrrayOfOptions.forEach((option) => {
     select.append(option);

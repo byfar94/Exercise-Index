@@ -1,4 +1,5 @@
 import { createFormElement, createContainerElement } from "./elementFactory";
+import { checkIfFormsAreClicked } from "./checkIfFormsAreClicked";
 
 import { handleLogInData } from "./authFireBase";
 
@@ -109,7 +110,7 @@ function createLogInForm() {
   const PasswordLabel = createFormElement("label", "loginpasswordlabel");
   PasswordLabel.innerText = "Password";
   const PasswordInput = createFormElement("input", "loginpasswordinput");
-  const submitBtn = createFormElement("input", "submit-btn");
+  const submitBtn = createFormElement("input", "log-in-submit-btn");
   submitBtn.setAttribute("type", "submit");
   submitBtn.setAttribute("value", "submit");
 
@@ -129,6 +130,7 @@ function createLogInForm() {
 
 function renderLogInform() {
   const btn = document.querySelector("#log-in-btn");
+  const background = document.querySelector("#background");
   btn.addEventListener("click", () => {
     if (!document.querySelector("#log-in-container")) {
       console.log("add container log in");
@@ -146,14 +148,43 @@ function renderLogInform() {
       form.PasswordContain.append(form.PasswordInput);
       form.fieldSet.append(form.submitBtn);
       handleLogInData();
+      background.classList.add("background-in");
+      background.classList.remove("background-out");
+      hideLogInForm();
       return;
     }
     if (document.querySelector("#log-in-container")) {
       console.log("remove container log in");
       document.querySelector("#log-in-container").remove();
+      background.classList.add("background-out");
+      background.classList.remove("background-in");
       return;
     }
   });
+}
+
+function hideLogInForm() {
+  document.addEventListener("click", handleCloseLogInOnClick);
+}
+
+function handleCloseLogInOnClick(event) {
+  const formContain = document.querySelector("#log-in-container");
+  const formBtn = document.querySelector("#log-in-btn");
+  const background = document.querySelector("#background");
+
+  if (
+    formContain &&
+    !formContain.contains(event.target) &&
+    event.target !== formBtn
+  ) {
+    console.log(event.target);
+    console.log("removed form");
+    formContain.remove();
+    background.classList.add("background-out");
+    background.classList.remove("background-in");
+
+    document.removeEventListener("click", handleCloseLogInOnClick);
+  }
 }
 
 export { renderLogInform };

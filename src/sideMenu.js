@@ -9,28 +9,33 @@ export {
 };
 
 function showSidebar() {
-  const menuBtn = document.querySelector("#menu-icon");
+  const menuBtn = document.querySelector("#catagory-title-btn");
+  console.log(menuBtn);
   const sideBar = document.querySelector("#sidebar");
   const background = document.querySelector("#background");
   menuBtn.addEventListener("click", () => {
+    console.log("second event listener ran");
     sideBar.classList.add("sidebar-in");
+    console.log(sideBar);
     background.classList.remove("background-out");
     background.classList.add("background-in");
   });
 }
 
 function hideSidebar() {
+  console.log("hide sidebar ran");
   const sideBar = document.querySelector("#sidebar");
-  const menuIcon = document.querySelector("#menu-icon");
+  const menuIcon = document.querySelector("#catagory-title-btn");
+  console.log(menuIcon);
   const background = document.querySelector("#background");
-  document.addEventListener("click", (event) => {
+  document.body.addEventListener("click", (event) => {
     if (
       !sideBar.contains(event.target) &&
-      event.target !== menuIcon &&
-      !document.querySelector("#log-in-container") &&
-      sideBar.classList.contains("sidebar-in")
+      event.target !== document.querySelector("#catagory-title-btn") &&
+      event.target !== document.querySelector("#dropdown-icon") &&
+      sideBar.classList.contains("sidebar-in") === true
     ) {
-      console.log(event.target);
+      console.log("side bar now hidden");
       sideBar.classList.remove("sidebar-in");
       background.classList.add("background-out");
       background.classList.remove("background-in");

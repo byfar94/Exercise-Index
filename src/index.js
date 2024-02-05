@@ -1,31 +1,29 @@
 import _ from "lodash";
 import "./style.css";
-require.context("../images"); //will load all images from image folder
+require.context("./images"); //will load all images from image folder
 import { loadExCards } from "./excards";
 import {
-  showSidebar,
-  hideSidebar,
   getBySidebarBodypart,
   getBySidebarAll,
   getBySidebarExtype,
 } from "./sideMenu";
 import { revealForm, hideForm } from "./form";
 import { renderLogInform } from "./loginForms";
-import { renderLogOutBtn, handleSignOut, myAuth } from "./authFireBase";
+import { handleSignOut, myAuth } from "./authFireBase";
+import { moveSearch, listenForWindowResize } from "./windowAdjust";
 
-function loadUI() {
-  showSidebar();
-  hideSidebar();
+async function loadUI() {
   renderLogInform();
-  renderLogOutBtn();
   handleSignOut();
   revealForm();
   hideForm();
-  getBySidebarAll();
   getBySidebarBodypart();
+  getBySidebarAll();
   getBySidebarExtype();
 }
 
-loadUI();
 loadExCards();
+loadUI();
 myAuth();
+moveSearch();
+listenForWindowResize();

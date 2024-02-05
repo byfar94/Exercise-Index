@@ -1,4 +1,3 @@
-const { createTextElement } = require("./elementFactory.js");
 const { initializeApp } = require("firebase/app");
 const {
   getAuth,
@@ -14,6 +13,8 @@ const auth = getAuth(firebaseapp);
 function handleLogInData() {
   const logInContainer = document.querySelector("#log-in-container");
   const form = document.querySelector("#log-in-form");
+  const background = document.querySelector("#background");
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
@@ -24,6 +25,8 @@ function handleLogInData() {
         const user = userCredential.user;
         console.log(`user logged in, user:${user}`);
         logInContainer.remove();
+        background.classList.add("background-out");
+        background.classList.remove("background-in");
       })
       .catch((error) => {
         const errorMessage = error.message;
@@ -31,20 +34,6 @@ function handleLogInData() {
         alert(errorMessage);
       });
   });
-}
-
-//log out
-function createLogOutBtn() {
-  let btn = createTextElement("button", "log-out-btn", "log out");
-  btn.setAttribute("id", "log-out-btn");
-  return btn;
-}
-
-function renderLogOutBtn() {
-  let btn = createLogOutBtn();
-  let container = document.querySelector("#user-btn-contain");
-  container.append(btn);
-  console.log("append log out btn");
 }
 
 function handleSignOut() {
@@ -101,4 +90,4 @@ async function myAuth() {
   });
 }
 
-export { handleLogInData, renderLogOutBtn, handleSignOut, myAuth };
+export { handleLogInData, handleSignOut, myAuth };

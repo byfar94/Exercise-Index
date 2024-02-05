@@ -10,6 +10,7 @@ import { deleteDataHandler } from "./dataHandler";
 import { showVid } from "./video";
 import { createEditCardFormSelect, editFormSubmit } from "./editFormBtn";
 import { createCatagoryTitle } from "./catagoryTitle";
+import { showSidebar, hideSidebar } from "./sideMenu";
 export { loadExCards, loadExCardsBP, loadExCardsET };
 
 //card factory function, returns an object with HTML elements
@@ -102,6 +103,11 @@ async function loadExCards() {
 }
 */
 
+function sidebarFunctions() {
+  showSidebar();
+  hideSidebar();
+}
+
 //load all exercise cards
 async function loadExCards() {
   try {
@@ -113,6 +119,7 @@ async function loadExCards() {
     deleteDataHandler(newArray);
     editFormSubmit(newArray);
     showVid();
+    sidebarFunctions();
   } catch (err) {
     console.log(err);
   }
@@ -129,6 +136,7 @@ async function loadExCardsBP(bp) {
     deleteDataHandler(newArray);
     editFormSubmit(newArray);
     showVid();
+    sidebarFunctions();
   } catch (err) {
     console.log(err);
   }
@@ -145,6 +153,7 @@ async function loadExCardsET(et) {
     deleteDataHandler(newArray);
     editFormSubmit(newArray);
     showVid();
+    sidebarFunctions();
   } catch (err) {
     console.log(err);
   }

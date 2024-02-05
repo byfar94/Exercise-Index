@@ -2,11 +2,12 @@ import { createTextElement, createContainerElement } from "./elementFactory";
 
 function createCatagoryTitle(text) {
   const catagoryTitle = createTextElement("h2", "cat-title", `${text}`);
+  catagoryTitle.setAttribute("id", "catagory-title-btn");
   const container = createContainerElement("div", "cat-title-contain");
   const iconElement = document.createElement("img");
   iconElement.setAttribute("alt", "dropdown icon");
-  iconElement.classList.add("dropdown-icon");
-  iconElement.setAttribute("src", "../images/dropdown.svg");
+  iconElement.setAttribute("id", "dropdown-icon");
+  iconElement.setAttribute("src", "../images/right-arrow.svg");
   appendCatagoryTitle(container, catagoryTitle, iconElement);
   return {
     catagoryTitle: catagoryTitle,

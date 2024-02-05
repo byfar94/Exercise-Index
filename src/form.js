@@ -29,6 +29,7 @@ function hideForm() {
       formContain.classList.contains("form-in")
     ) {
       console.log(event.target);
+      console.log("hide exercise form ran!!");
       formContain.classList.remove("form-in");
       background.classList.add("background-out");
       background.classList.remove("background-in");

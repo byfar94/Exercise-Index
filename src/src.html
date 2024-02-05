@@ -11,28 +11,39 @@
       <div id="l-header-contain">
         <div>
           <img
-            src="../images/menu.svg"
-            alt="menu icon"
-            width="30rem"
-            height="30rem"
-            id="menu-icon"
-          />
-        </div>
-        <div>
-          <img
-            src="../images/weight.svg"
+            src="./images/weight.svg"
             alt="weight icon"
-            width="30rem"
-            height="30rem"
+            width="40rem"
+            height="40rem"
             id="weight-icon"
           />
           <h1 id="main-header-title">Exercise Index</h1>
         </div>
       </div>
       <div class="search-contain">
-        <input type="search" id="search" name="seach" />
-        <div>
-          <img src="../images/search.svg" />
+        <div class="search-component">
+          <input type="search" id="search" name="seach" />
+          <div>
+            <img id="mag" src="./images/search.svg" />
+          </div>
+        </div>
+      </div>
+      <div id="header-btn-contain">
+        <div id="user-btn-contain">
+          <button id="log-in-btn" class="invis">
+            log in
+            <img src="./images/log-in.svg" />
+          </button>
+          <button id="log-out-btn" class="invis">
+            log out
+            <img src="./images/log-out.svg" />
+          </button>
+        </div>
+        <div id="form-btn-contain">
+          <button id="form-btn">
+            add exercise
+            <img src="./images/add.svg" />
+          </button>
         </div>
       </div>
     </header>
@@ -48,16 +59,13 @@
           <li class="bp-catagory-li"><a>elbow</a></li>
           <li class="bp-catagory-li"><a>shoulder</a></li>
         </ul>
-        <ul>
+        <ul id="et-list">
           <li>Exercise Type:</li>
           <li class="et-catagory-li"><a>AAROM</a></li>
           <li class="et-catagory-li"><a>AROM</a></li>
           <li class="et-catagory-li"><a>resistance</a></li>
           <li class="et-catagory-li"><a>stretch</a></li>
         </ul>
-        <div id="user-btn-contain">
-          <button id="log-in-btn" class="log-in-btn">log in</button>
-        </div>
       </div>
       <section id="form-contain">
         <form id="exercise-form" enctype="multipart/form-data">
@@ -93,7 +101,7 @@
               <input type="text" id="videoid" name="videoid" />
             </div>
             <div>
-              <input type="submit" value="submit" />
+              <input type="submit" value="submit" id="exercise-form-submit" />
             </div>
           </fieldset>
         </form>
@@ -101,9 +109,6 @@
       <section class="exercises">
         <div class="exercise-container"></div>
       </section>
-      <div id="form-btn-contain">
-        <button id="form-btn">+</button>
-      </div>
     </main>
     <div id="background" class="background-out"></div>
   </body>
