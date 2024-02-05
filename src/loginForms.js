@@ -1,8 +1,5 @@
 import { createFormElement, createContainerElement } from "./elementFactory";
-import { checkIfFormsAreClicked } from "./checkIfFormsAreClicked";
-
 import { handleLogInData } from "./authFireBase";
-
 /*
 function createSignUpForm() {
   const signUpFormContainer = createContainerElement("div", "sign-in-contain");
