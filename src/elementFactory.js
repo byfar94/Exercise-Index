@@ -39,8 +39,7 @@ function createFormElement(type, ID) {
   let element = document.createElement(`${type}`);
   if (type !== "option") {
     element.setAttribute("id", `${ID}`);
-  }
-  if (type === `input` || type === "select") {
+  } else {
     element.setAttribute("name", `${ID}`);
   }
 

@@ -165,11 +165,11 @@ app.delete("/exercise/:id", async (req, res) => {
     console.log(req.body.objImagePath);
     console.log(req.body.objTitle);
     console.log(req.params.id);
-    let cardID = req.params.id;
+    let id = req.params.id;
 
     let sqlSel = `SELECT * FROM exercises WHERE id = ?`;
 
-    database.query(sqlSel, [cardID], async (err, result) => {
+    database.query(sqlSel, [id], async (err, result) => {
       if (err) return console.log(err.message);
       const imagepath = result[0]?.imagepath;
       const params = {
@@ -188,7 +188,7 @@ app.delete("/exercise/:id", async (req, res) => {
 
     const sqlDlt = `DELETE from exercises where id = ?`;
 
-    database.query(sqlDlt, [cardID], (err) => {
+    database.query(sqlDlt, [id], (err) => {
       if (err) return console.error(err.message);
     });
     return res.json({
@@ -203,7 +203,7 @@ app.delete("/exercise/:id", async (req, res) => {
   }
 });
 
-//edit (patch) database
+//edit (patch) database (text)
 
 app.patch("/exercise/:id", async (req, res) => {
   try {
@@ -246,6 +246,30 @@ app.patch("/exercise/:id", async (req, res) => {
         console.log("Update successful", results);
       });
     }
+    if (req.body.bodypart) {
+      let bodypart = req.body.bodypart;
+      let sql = "UPDATE exercises SET bodypart = ? WHERE id = ?";
+      database.query(sql, [bodypart, id], (err, results) => {
+        if (err) {
+          console.error("An error occurred while executing the query");
+          throw err;
+        }
+
+        console.log("Update successful", results);
+      });
+    }
+    if (req.body.extype) {
+      let extype = req.body.extype;
+      let sql = "UPDATE exercises SET extype = ? WHERE id = ?";
+      database.query(sql, [extype, id], (err, results) => {
+        if (err) {
+          console.error("An error occurred while executing the query");
+          throw err;
+        }
+
+        console.log("Update successful", results);
+      });
+    }
 
     return res.json({
       status: 200,
@@ -256,5 +280,92 @@ app.patch("/exercise/:id", async (req, res) => {
       status: 400,
       success: false,
     });
+  }
+});
+
+//edit image path
+
+app.patch("/exercise/image/:id", upload.single("imgfile"), async (req, res) => {
+  try {
+    //delete image from s3 bucket
+
+    console.log(req.file.buffer);
+    if (!req.body.extitle) {
+      console.log("no extitle");
+      return;
+    }
+    let id = req.params.id;
+
+    let sqlSel = `SELECT * FROM exercises WHERE id = ?`;
+
+    database.query(sqlSel, [id], async (err, result) => {
+      if (err) return console.log(err.message);
+      const imagepath = result[0]?.imagepath;
+      const params = {
+        Bucket: bucketName,
+        Key: imagepath,
+      };
+
+      try {
+        const deleteCommand = new DeleteObjectCommand(params);
+        await s3.send(deleteCommand);
+        console.log(`Object ${imagepath} successfully deleted from S3`);
+      } catch (error) {
+        console.error("Error deleting object from S3:", error);
+      }
+    });
+
+    //add new image to DB and s3 bucket
+
+    console.log(req.body.extitle);
+    let exerciseTitle = req.body.extitle;
+    let exerciseTitleNoSpace = exerciseTitle.replace(/\s+/g, "");
+    let imgFileName = `${exerciseTitleNoSpace}.jpeg`;
+
+    const fileBuffer = req.file.buffer;
+    console.log("file:" + req.file);
+
+    // Get the original width and height of the image
+    const { width, height } = await sharp(fileBuffer).metadata();
+
+    // Calculate the new dimensions by halving both width and height
+    const newWidth = Math.round(width / 2);
+    const newHeight = Math.round(height / 2);
+
+    // Convert and resize the image using sharp
+    const resizedImageBuffer = await sharp(fileBuffer)
+      .resize({ width: newWidth, height: newHeight })
+      .jpeg({ quality: 90 })
+      .toBuffer();
+
+    const params = {
+      Bucket: bucketName,
+      Key: imgFileName,
+      Body: resizedImageBuffer,
+    };
+    try {
+      const command = new PutObjectCommand(params);
+      await s3.send(command);
+      console.log("Object successfully uploaded to S3");
+    } catch (error) {
+      console.error("Error uploading object to S3:", error);
+    }
+
+    let sql = "UPDATE exercises SET imagepath = ? WHERE id = ?";
+    database.query(sql, [imgFileName, id], (err, results) => {
+      if (err) {
+        console.error("An error occurred while executing the update img query");
+        throw err;
+      }
+
+      console.log("Imgage Update successful", results);
+    });
+
+    return res.json({
+      status: 200,
+      success: true,
+    });
+  } catch (err) {
+    console.log(err);
   }
 });

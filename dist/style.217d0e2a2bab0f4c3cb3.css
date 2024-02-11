@@ -383,8 +383,7 @@ textarea {
 
 /* <-------------------------Text Edit form ----------------------> */
 
-#text-edit-form,
-#image-edit-form {
+#text-edit-form {
   position: fixed;
   z-index: 20;
   background-color: var(--main-dark);
@@ -509,3 +508,4 @@ a {
     font-size: 1rem;
   }
 }
+
